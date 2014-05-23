@@ -20,9 +20,8 @@ public class LootItem : MonoBehaviour {
 	}
 
 
-	void OnMouseUp()
+	public void PickUp()
 	{
-		Debug.Log("LootMe");
 		for(int i = 0; i < InventoryGUI.inventorySize; i++)
 		{
 
