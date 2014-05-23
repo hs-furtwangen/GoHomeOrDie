@@ -9,6 +9,7 @@ public class MapGenerator : MonoBehaviour {
 	public Sprite[] pathTiles;
 	public Sprite[] treeTiles;
 	public Sprite[] waterTiles;
+	public Sprite[] deepWaterTiles;
 
 	private TileMap m_tileMap;
 
@@ -19,6 +20,7 @@ public class MapGenerator : MonoBehaviour {
 		Path,
 		Tree,
 		Water,
+		WaterDeep,
 	}
 
 	// Use this for initialization
@@ -40,6 +42,7 @@ public class MapGenerator : MonoBehaviour {
 
 		// Generate a lake
 		generateLake ();
+		generateDeepWater ();
 
 		// And trees!
 		generateTrees ();
@@ -174,6 +177,26 @@ public class MapGenerator : MonoBehaviour {
 		}
 	}
 
+	void generateDeepWater()
+	{
+		for (uint x = 0; x < m_tileMap.getWidth(); x++) {
+			for(uint y = 0; y < m_tileMap.getHeight(); y++) {
+				if (checkTile(x, y, 0) == TileType.Water)
+				{
+					Vector2 tl = m_tileMap.getTopLeftOf(x, y);
+					Vector2 tr = m_tileMap.getTopRightOf(x, y);
+					Vector2 bl = m_tileMap.getBottomLeftOf(x, y);
+					Vector2 br = m_tileMap.getBottomRightOf(x, y);
+					if((checkTile((uint)tl.x, (uint)tl.y, 0) == TileType.Water || checkTile((uint)tl.x, (uint)tl.y, 0) == TileType.WaterDeep)
+					   && (checkTile((uint)tr.x, (uint)tr.y, 0) == TileType.Water || checkTile((uint)tr.x, (uint)tr.y, 0) == TileType.WaterDeep)
+					   && (checkTile((uint)bl.x, (uint)bl.y, 0) == TileType.Water || checkTile((uint)bl.x, (uint)bl.y, 0) == TileType.WaterDeep)
+					   && (checkTile((uint)br.x, (uint)br.y, 0) == TileType.Water || checkTile((uint)br.x, (uint)br.y, 0) == TileType.WaterDeep))
+						createTileAt(x, y, 0, TileType.WaterDeep);
+				}
+			}
+		}
+	}
+
 	void createTileAt(uint x, uint y, uint z, TileType type)
 	{
 		Sprite curSprite = grassTiles[0];
@@ -189,6 +212,9 @@ public class MapGenerator : MonoBehaviour {
 			break;
 		case TileType.Water:
 			curSprite = waterTiles[Random.Range (0, waterTiles.Length - 1)];
+			break;
+		case TileType.WaterDeep:
+			curSprite = deepWaterTiles[Random.Range (0, deepWaterTiles.Length - 1)];
 			break;
 		}
 
@@ -209,13 +235,15 @@ public class MapGenerator : MonoBehaviour {
 	{
 		Sprite spr = m_tileMap.getTile (x, y, 0).GetComponent<SpriteRenderer> ().sprite;
 		if (System.Array.IndexOf (grassTiles, spr) > -1)
-			return TileType.Grass;
-		else if (System.Array.IndexOf (pathTiles, spr) > -1)
-			return TileType.Path;
-		else if (System.Array.IndexOf (treeTiles, spr) > -1)
-			return TileType.Tree;
-		else if (System.Array.IndexOf (waterTiles, spr) > -1)
-			return TileType.Water;
+						return TileType.Grass;
+				else if (System.Array.IndexOf (pathTiles, spr) > -1)
+						return TileType.Path;
+				else if (System.Array.IndexOf (treeTiles, spr) > -1)
+						return TileType.Tree;
+				else if (System.Array.IndexOf (waterTiles, spr) > -1)
+						return TileType.Water;
+				else if (System.Array.IndexOf (deepWaterTiles, spr) > -1)
+						return TileType.WaterDeep;
 		else
 			return TileType.None;
 	}
