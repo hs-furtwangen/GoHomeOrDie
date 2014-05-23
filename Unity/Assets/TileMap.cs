@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TileMap : MonoBehaviour {
+public class TileMap {
 
-	public uint m_tileWidth;
-	public uint m_tileHeight;
+	public int m_tileWidth = 64;
+	public int m_tileHeight = 64;
 
 	public TileMap(uint width, uint height, uint layers)
 	{
@@ -42,8 +42,8 @@ public class TileMap : MonoBehaviour {
 	public Vector2 map2Screen(uint x, uint y)
 	{
 		if (x < m_width && y < m_height) {
-			Quaternion rot = Quaternion.AngleAxis(Mathf.PI / 4, new Vector3(0, 0, 1));
-			Vector3 vec3 = rot * new Vector3(x * m_tileWidth, y * m_tileHeight, 0);
+			Quaternion rot = Quaternion.AngleAxis(-45, new Vector3(0, 0, 1));
+			Vector3 vec3 = rot * new Vector3(x, y, 0);
 			Vector2 result = new Vector2(vec3.x, vec3.y);
 			return result;
 		} else
@@ -52,8 +52,8 @@ public class TileMap : MonoBehaviour {
 
 	public Vector2 screen2Map(float x, float y)
 	{
-		Quaternion rot = Quaternion.AngleAxis(- Mathf.PI / 4, new Vector3(0, 0, 1));
-		Vector3 vec3 = rot * new Vector3(x / m_tileWidth, y / m_tileHeight, 0);
+		Quaternion rot = Quaternion.AngleAxis(45, new Vector3(0, 0, 1));
+		Vector3 vec3 = rot * new Vector3(x, y, 0);
 		Vector2 result = new Vector2(vec3.x, vec3.y);
 		return result;
 	}
