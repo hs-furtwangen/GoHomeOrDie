@@ -3,8 +3,8 @@ using System.Collections;
 
 public class TileMap {
 
-	public int m_tileWidth = 64;
-	public int m_tileHeight = 64;
+	public uint m_tileWidth = 32;
+	public uint m_tileHeight = 16;
 
 	public TileMap(uint width, uint height, uint layers)
 	{
@@ -42,9 +42,11 @@ public class TileMap {
 	public Vector2 map2Screen(uint x, uint y)
 	{
 		if (x < m_width && y < m_height) {
-			Quaternion rot = Quaternion.AngleAxis(-45, new Vector3(0, 0, 1));
-			Vector3 vec3 = rot * new Vector3(x, y, 0);
-			Vector2 result = new Vector2(vec3.x, vec3.y);
+			float sX = x;
+			float sY = y / 2.0f * (m_tileHeight / (float)m_tileWidth);
+			if(y % 2 == 1)
+				sX += 1.0f / 2.0f;
+			Vector2 result = new Vector2(sX, sY);
 			return result;
 		} else
 			return new Vector2();
@@ -52,9 +54,12 @@ public class TileMap {
 
 	public Vector2 screen2Map(float x, float y)
 	{
-		Quaternion rot = Quaternion.AngleAxis(45, new Vector3(0, 0, 1));
-		Vector3 vec3 = rot * new Vector3(x, y, 0);
-		Vector2 result = new Vector2(vec3.x, vec3.y);
+		float mX = x;
+		float mY = y * 2.0f * (m_tileHeight / (float)m_tileWidth);
+		if (mY % 2 == 1)
+			mX -= 1.0f / 2.0f;
+
+		Vector2 result = new Vector2(mX, mY);
 		return result;
 	}
 

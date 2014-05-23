@@ -4,8 +4,8 @@ using System.Collections;
 public class MapGenerator : MonoBehaviour {
 
 	public Transform targetFolder;
-	public Transform usingFolder;
-	public GameObject testTile;
+	public GameObject tilePrefab;
+	public Sprite grassTile;
 
 	private TileMap m_tileMap;
 
@@ -19,18 +19,21 @@ public class MapGenerator : MonoBehaviour {
 			for(uint j = 0; j < m_tileMap.getHeight(); j++)
 			{
 				Vector2 screenPos = m_tileMap.map2Screen(i, j);
-				GameObject cur = Instantiate(testTile, new Vector3(screenPos.x, screenPos.y, 0), Quaternion.AngleAxis(-45, new Vector3(0, 0, 1))) as GameObject;
+				GameObject cur = Instantiate(tilePrefab, new Vector3(screenPos.x, screenPos.y, 0), Quaternion.identity) as GameObject;
 				cur.transform.parent = targetFolder;
 				cur.name = "Tile-" + i + "x" + j;
 				cur.SetActive(true);
+				cur.GetComponent<SpriteRenderer>().sprite = grassTile;
 
 				m_tileMap.setTile(i, j, 0, cur);
 			}
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void generatePath()
+	{
+		//uint xStart = Random.Range(0, m_tileMap.getWidth() - 1);
+		//uint yStart = Random.Range(0, m_tileMap.getHeight() - 1);
 
 	}
 }
