@@ -5,9 +5,9 @@ public class MapGenerator : MonoBehaviour {
 
 	public Transform targetFolder;
 	public GameObject tilePrefab;
-	public Sprite grassTile;
-	public Sprite pathTile;
-	public Sprite treeTile;
+	public Sprite[] grassTiles;
+	public Sprite[] pathTiles;
+	public Sprite[] treeTiles;
 
 	private TileMap m_tileMap;
 
@@ -118,16 +118,16 @@ public class MapGenerator : MonoBehaviour {
 
 	void createTileAt(uint x, uint y, uint z, TileType type)
 	{
-		Sprite curSprite = grassTile;
+		Sprite curSprite = grassTiles[0];
 		switch (type) {
 		case TileType.Grass:
-			curSprite = grassTile;
+			curSprite = grassTiles[Random.Range(0, grassTiles.Length-1)];
 			break;
 		case TileType.Path:
-			curSprite = pathTile;
+			curSprite = pathTiles[Random.Range(0, pathTiles.Length-1)];
 			break;
 		case TileType.Tree:
-			curSprite = treeTile;
+			curSprite = treeTiles[Random.Range(0, treeTiles.Length-1)];
 			break;
 		}
 
@@ -147,11 +147,11 @@ public class MapGenerator : MonoBehaviour {
 	TileType checkTile(uint x, uint y, uint z)
 	{
 		Sprite spr = m_tileMap.getTile (x, y, 0).GetComponent<SpriteRenderer> ().sprite;
-		if (spr == grassTile)
+		if (System.Array.IndexOf(grassTiles, spr) > -1)
 			return TileType.Grass;
-		else if (spr == pathTile)
+		else if (System.Array.IndexOf(pathTiles, spr) > -1)
 			return TileType.Path;
-		else if (spr == treeTile)
+		else if (System.Array.IndexOf(treeTiles, spr) > -1)
 			return TileType.Tree;
 		else
 			return TileType.None;
