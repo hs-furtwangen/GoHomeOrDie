@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 // ReSharper disable once CheckNamespace
-public class Movement : MonoBehaviour
+public class PlayerInteraction : MonoBehaviour
 {
     public Transform ItemParent;
 
