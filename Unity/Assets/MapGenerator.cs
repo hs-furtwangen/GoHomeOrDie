@@ -7,6 +7,7 @@ public class MapGenerator : MonoBehaviour {
 	public GameObject tilePrefab;
 	public Sprite grassTile;
 	public Sprite pathTile;
+	public Sprite treeTile;
 
 	private TileMap m_tileMap;
 
@@ -15,6 +16,7 @@ public class MapGenerator : MonoBehaviour {
 		None,
 		Grass,
 		Path,
+		Tree,
 	}
 
 	// Use this for initialization
@@ -33,8 +35,13 @@ public class MapGenerator : MonoBehaviour {
 		// Generate a path
 		for(uint i = 0; i < m_tileMap.getWidth() + m_tileMap.getHeight();)
 			i += generatePath();
+
+		generateTrees ();
 	}
 
+	/**
+	 * Generates a path and returns the amount of generated tiles
+	 */
 	uint generatePath()
 	{
 		uint amount = 1;
@@ -86,7 +93,7 @@ public class MapGenerator : MonoBehaviour {
 
 			// Break?
 			if(Random.Range(0.0f, 1.0f) < breakProbability)
-				return amount;
+				break;
 
 			lastX = newX;
 			lastY = newY;
@@ -94,21 +101,44 @@ public class MapGenerator : MonoBehaviour {
 		return amount;
 	}
 
+	void generateTrees()
+	{
+		float treeProbability = 0;
+		for (uint x = 0; x < m_tileMap.getWidth(); x++) {
+			for(uint y = 0; y < m_tileMap.getHeight(); y ++) {
+				if(checkTile(x, y, 0) == TileType.Grass)
+					treeProbability = 0.1f;
+				else if(checkTile(x, y, 0) == TileType.Path)
+					treeProbability = 0;
+				if(Random.Range(0.0f, 1.0f) < treeProbability)
+					createTileAt(x, y, 1, TileType.Tree);
+			}
+		}
+	}
+
 	void createTileAt(uint x, uint y, uint z, TileType type)
 	{
+		Sprite curSprite = grassTile;
+		switch (type) {
+		case TileType.Grass:
+			curSprite = grassTile;
+			break;
+		case TileType.Path:
+			curSprite = pathTile;
+			break;
+		case TileType.Tree:
+			curSprite = treeTile;
+			break;
+		}
+
 		Vector2 screenPos = m_tileMap.map2Screen(x, y);
-		GameObject cur = Instantiate(tilePrefab, new Vector3(screenPos.x, screenPos.y, z), Quaternion.identity) as GameObject;
+		screenPos.y += (curSprite.rect.height - m_tileMap.m_tileHeight) / m_tileMap.m_tileHeight * 0.25f; 
+
+		GameObject cur = Instantiate(tilePrefab, new Vector3(screenPos.x, screenPos.y, -z), Quaternion.identity) as GameObject;
 		cur.transform.parent = targetFolder;
 		cur.name = "Tile-" + x + "x" + y + "x" + z + "_" + type.ToString();
 		cur.SetActive(true);
-		switch (type) {
-		case TileType.Grass:
-			cur.GetComponent<SpriteRenderer>().sprite = grassTile;
-				break;
-		case TileType.Path:
-			cur.GetComponent<SpriteRenderer>().sprite = pathTile;
-				break;
-		}
+		cur.GetComponent<SpriteRenderer>().sprite = curSprite;
 		
 		m_tileMap.setTile(x, y, z, cur);
 	}
@@ -120,6 +150,8 @@ public class MapGenerator : MonoBehaviour {
 			return TileType.Grass;
 		else if (spr == pathTile)
 			return TileType.Path;
+		else if (spr == treeTile)
+			return TileType.Tree;
 		else
 			return TileType.None;
 	}
