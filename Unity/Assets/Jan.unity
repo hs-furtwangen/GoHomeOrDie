@@ -103,8 +103,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetFolder: {fileID: 1244600851}
   tilePrefab: {fileID: 100000, guid: ce0141ccb89c3d348b498184afa0c4e2, type: 2}
-  grassTile: {fileID: 21300000, guid: 42cc5a359f46e6b43969110e10b93386, type: 3}
-  pathTile: {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
+  grassTiles:
+  - {fileID: 21300000, guid: 3a045bf227a6e8b4a92771404c4fe01f, type: 3}
+  - {fileID: 21300000, guid: d1eeef648c4d04c43aff74a110c7c671, type: 3}
+  - {fileID: 21300000, guid: 64040d47f8248c34b833e7b780ecaed8, type: 3}
+  - {fileID: 21300000, guid: 6d06477eb3ae3e8498162b2e46cbc260, type: 3}
+  - {fileID: 21300000, guid: 4b4facfa2b825034d9e0ab17f3910460, type: 3}
+  - {fileID: 21300000, guid: 98ee404e7b06c62469bc7993a68689f0, type: 3}
+  pathTiles:
+  - {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
+  treeTiles:
+  - {fileID: 21300000, guid: 8731b47f20f360644bbff20e79c3e67d, type: 3}
 --- !u!4 &277508882
 Transform:
   m_ObjectHideFlags: 0
