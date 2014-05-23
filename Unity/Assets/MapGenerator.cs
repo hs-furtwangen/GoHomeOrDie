@@ -139,6 +139,7 @@ public class MapGenerator : MonoBehaviour {
 		cur.name = "Tile-" + x + "x" + y + "x" + z + "_" + type.ToString();
 		cur.SetActive(true);
 		cur.GetComponent<SpriteRenderer>().sprite = curSprite;
+		cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * z - y);
 		
 		m_tileMap.setTile(x, y, z, cur);
 	}
