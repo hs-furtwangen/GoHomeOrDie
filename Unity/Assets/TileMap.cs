@@ -24,6 +24,11 @@ public class TileMap {
 		return m_height;
 	}
 
+	public uint getLayers()
+	{
+		return m_layers;
+	}
+
 	public void setTile(uint x, uint y, uint z, GameObject tile)
 	{
 		if (x < m_width && y < m_height && z < m_layers) {

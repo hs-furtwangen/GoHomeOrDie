@@ -8,6 +8,7 @@ public class MapGenerator : MonoBehaviour {
 	public Sprite[] grassTiles;
 	public Sprite[] pathTiles;
 	public Sprite[] treeTiles;
+	public Sprite[] waterTiles;
 
 	private TileMap m_tileMap;
 
@@ -17,6 +18,7 @@ public class MapGenerator : MonoBehaviour {
 		Grass,
 		Path,
 		Tree,
+		Water,
 	}
 
 	// Use this for initialization
@@ -36,6 +38,10 @@ public class MapGenerator : MonoBehaviour {
 		for(uint i = 0; i < m_tileMap.getWidth() + m_tileMap.getHeight();)
 			i += generatePath();
 
+		// Generate a lake
+		generateLake ();
+
+		// And trees!
 		generateTrees ();
 	}
 
@@ -108,10 +114,62 @@ public class MapGenerator : MonoBehaviour {
 			for(uint y = 0; y < m_tileMap.getHeight(); y ++) {
 				if(checkTile(x, y, 0) == TileType.Grass)
 					treeProbability = 0.1f;
-				else if(checkTile(x, y, 0) == TileType.Path)
-					treeProbability = 0;
 				if(Random.Range(0.0f, 1.0f) < treeProbability)
 					createTileAt(x, y, 1, TileType.Tree);
+				treeProbability = 0;
+			}
+		}
+	}
+
+	void generateLake()
+	{
+		uint xStart;
+		uint yStart;
+		do {
+			xStart = (uint)Mathf.RoundToInt (Random.Range (0, m_tileMap.getWidth () - 1));
+			yStart = (uint)Mathf.RoundToInt (Random.Range (0, m_tileMap.getHeight () - 1));
+		} while(checkTile(xStart, yStart, 0) != TileType.Grass);
+		generateLake (xStart, yStart, 1.0f);
+	}
+
+	void generateLake(uint x, uint y, float probability)
+	{
+		createTileAt(x, y, 0, TileType.Water);
+		// Every adjacent tile has a certain probability to be a water tile as well
+		// Top left
+		if (Random.Range (0.0f, 1.0f) < probability) {
+			Vector2 coord = m_tileMap.getTopLeftOf (x, y);
+			if(isCoordValid(coord) && checkTile((uint)coord.x, (uint)coord.y, 0) == TileType.Grass)
+			{
+				createTileAt((uint)coord.x, (uint)coord.y, 0, TileType.Water);
+				generateLake((uint)coord.x, (uint)coord.y, probability - 0.1f);
+			}
+		}
+		// Top right
+		if (Random.Range (0.0f, 1.0f) < probability) {
+			Vector2 coord = m_tileMap.getTopRightOf (x, y);
+			if(isCoordValid(coord) && checkTile((uint)coord.x, (uint)coord.y, 0) == TileType.Grass)
+			{
+				createTileAt((uint)coord.x, (uint)coord.y, 0, TileType.Water);
+				generateLake((uint)coord.x, (uint)coord.y, probability - 0.1f);
+			}
+		}
+		// Bottom left
+		if (Random.Range (0.0f, 1.0f) < probability) {
+			Vector2 coord = m_tileMap.getBottomLeftOf (x, y);
+			if(isCoordValid(coord) && checkTile((uint)coord.x, (uint)coord.y, 0) == TileType.Grass)
+			{
+				createTileAt((uint)coord.x, (uint)coord.y, 0, TileType.Water);
+				generateLake((uint)coord.x, (uint)coord.y, probability - 0.1f);
+			}
+		}
+		// Bottom right
+		if (Random.Range (0.0f, 1.0f) < probability) {
+			Vector2 coord = m_tileMap.getBottomRightOf (x, y);
+			if(isCoordValid(coord) && checkTile((uint)coord.x, (uint)coord.y, 0) == TileType.Grass)
+			{
+				createTileAt((uint)coord.x, (uint)coord.y, 0, TileType.Water);
+				generateLake((uint)coord.x, (uint)coord.y, probability - 0.1f);
 			}
 		}
 	}
@@ -128,6 +186,9 @@ public class MapGenerator : MonoBehaviour {
 			break;
 		case TileType.Tree:
 			curSprite = treeTiles[Random.Range(0, treeTiles.Length-1)];
+			break;
+		case TileType.Water:
+			curSprite = waterTiles[Random.Range (0, waterTiles.Length - 1)];
 			break;
 		}
 
@@ -147,13 +208,25 @@ public class MapGenerator : MonoBehaviour {
 	TileType checkTile(uint x, uint y, uint z)
 	{
 		Sprite spr = m_tileMap.getTile (x, y, 0).GetComponent<SpriteRenderer> ().sprite;
-		if (System.Array.IndexOf(grassTiles, spr) > -1)
+		if (System.Array.IndexOf (grassTiles, spr) > -1)
 			return TileType.Grass;
-		else if (System.Array.IndexOf(pathTiles, spr) > -1)
+		else if (System.Array.IndexOf (pathTiles, spr) > -1)
 			return TileType.Path;
-		else if (System.Array.IndexOf(treeTiles, spr) > -1)
+		else if (System.Array.IndexOf (treeTiles, spr) > -1)
 			return TileType.Tree;
+		else if (System.Array.IndexOf (waterTiles, spr) > -1)
+			return TileType.Water;
 		else
 			return TileType.None;
+	}
+
+	bool isCoordValid(Vector2 coord)
+	{
+		return coord.x >= 0 && coord.x < m_tileMap.getWidth() && coord.y >= 0 && coord.y < m_tileMap.getHeight();
+	}
+
+	bool isCoordValid(int x, int y, int z)
+	{
+		return x >= 0 && x < m_tileMap.getWidth() && y >= 0 && y < m_tileMap.getHeight() && z >= 0 && z < m_tileMap.getLayers();
 	}
 }

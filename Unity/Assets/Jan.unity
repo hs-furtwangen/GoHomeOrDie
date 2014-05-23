@@ -114,6 +114,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
   treeTiles:
   - {fileID: 21300000, guid: 8731b47f20f360644bbff20e79c3e67d, type: 3}
+  waterTiles:
+  - {fileID: 21300000, guid: 7df8e79c0fa101a4fb4a0347544b717a, type: 3}
+  - {fileID: 21300000, guid: 24ddb6f4a5ef3aa49b30a716f5e08401, type: 3}
+  - {fileID: 21300000, guid: ba53961319191b640960677180627b64, type: 3}
+  - {fileID: 21300000, guid: 2e4187712f3c45744ae9023f4034fea5, type: 3}
 --- !u!4 &277508882
 Transform:
   m_ObjectHideFlags: 0
