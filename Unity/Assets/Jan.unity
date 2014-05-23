@@ -102,8 +102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetFolder: {fileID: 1244600851}
-  usingFolder: {fileID: 0}
-  testTile: {fileID: 100000, guid: ce0141ccb89c3d348b498184afa0c4e2, type: 2}
+  tilePrefab: {fileID: 100000, guid: ce0141ccb89c3d348b498184afa0c4e2, type: 2}
+  grassTile: {fileID: 21300000, guid: 42cc5a359f46e6b43969110e10b93386, type: 3}
+  pathTile: {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
 --- !u!4 &277508882
 Transform:
   m_ObjectHideFlags: 0
@@ -217,7 +218,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1482397556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 6.57999992, y: 3.66000009, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

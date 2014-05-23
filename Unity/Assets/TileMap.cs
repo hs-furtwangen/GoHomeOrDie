@@ -27,6 +27,9 @@ public class TileMap {
 	public void setTile(uint x, uint y, uint z, GameObject tile)
 	{
 		if (x < m_width && y < m_height && z < m_layers) {
+			// Delete previous tile
+			if(m_tiles[x, y, z] != null)
+				Object.Destroy(m_tiles[x, y, z]);
 			m_tiles[x, y, z] = tile;
 		}
 	}
@@ -45,7 +48,7 @@ public class TileMap {
 			float sX = x;
 			float sY = y / 2.0f * (m_tileHeight / (float)m_tileWidth);
 			if(y % 2 == 1)
-				sX += 1.0f / 2.0f;
+				sX -= 1.0f / 2.0f;
 			Vector2 result = new Vector2(sX, sY);
 			return result;
 		} else
@@ -63,6 +66,38 @@ public class TileMap {
 		return result;
 	}
 
+	public Vector2 getTopLeftOf(uint x, uint y)
+	{
+		if (y % 2 == 1)
+			return new Vector2 (x - 1, y + 1);
+		else
+			return new Vector2 (x, y + 1);
+	}
+
+	public Vector2 getTopRightOf(uint x, uint y)
+	{
+		if (y % 2 == 1)
+			return new Vector2 (x, y + 1);
+		else
+			return new Vector2 (x + 1, y + 1);
+	}
+
+	public Vector2 getBottomLeftOf(uint x, uint y)
+	{
+		if (y % 2 == 1)
+			return new Vector2 (x - 1, y - 1);
+		else
+			return new Vector2 (x, y - 1);
+	}
+
+	public Vector2 getBottomRightOf(uint x, uint y)
+	{
+		if (y % 2 == 1)
+			return new Vector2 (x, y - 1);
+		else
+			return new Vector2 (x - 1, y - 1);
+	}
+	
 
 	private uint m_width;
 	private uint m_height;
