@@ -1,61 +1,64 @@
 ﻿using UnityEngine;
 
-public class movement : MonoBehaviour
+// ReSharper disable once CheckNamespace
+public class Movement : MonoBehaviour
 {
-    public Transform itemParent;
+    public Transform ItemParent;
 
-    private float movementSensitivity;
-    private GameObject mainCamera;
-    private bool movementByMouse;
-    private bool movementByItem;
-    private Vector2 mouseMovementTarget;
-    private float mouseStopDistance;
+    private float _movementSensitivity;
+    private GameObject _mainCamera;
+    private bool _movementByMouse;
+    private bool _movementByItem;
+    private Vector2 _mouseMovementTarget;
+    private float _mouseStopDistance;
 
-    private GameObject moveToItem;
-    private float pickupDistance;
+    private GameObject _moveToItem;
+    private float _pickupDistance;
 
-	// Use this for initialization
+// ReSharper disable once UnusedMember.Local
 	void Start ()
 	{
-	    movementSensitivity = 1.3f;
-	    mainCamera = GameObject.Find("/Main Camera");
-        movementByMouse = false;
-        movementByItem = false;
-        mouseMovementTarget = new Vector2();
-	    mouseStopDistance = 0.15f;
-	    pickupDistance = mouseStopDistance*2;
+	    _movementSensitivity = 1.3f;
+	    _mainCamera = GameObject.Find("/Main Camera");
+        _movementByMouse = false;
+        _movementByItem = false;
+        _mouseMovementTarget = new Vector2();
+	    _mouseStopDistance = 0.15f;
+	    _pickupDistance = _mouseStopDistance*2;
 	}
 	
-	// Update is called once per frame
+// ReSharper disable once UnusedMember.Local
 	void Update ()
 	{
-	    float moveX = Input.GetAxis("Horizontal")*movementSensitivity*Time.deltaTime;
-	    float moveY = Input.GetAxis("Vertical")*movementSensitivity*Time.deltaTime;
+	    float moveX = Input.GetAxis("Horizontal")*_movementSensitivity*Time.deltaTime;
+	    float moveY = Input.GetAxis("Vertical")*_movementSensitivity*Time.deltaTime;
 
 	    Vector2 movementVector = Vector2.zero;
 
+// ReSharper disable CompareOfFloatsByEqualityOperator
 	    if (moveX != 0 || moveY != 0)
+// ReSharper restore CompareOfFloatsByEqualityOperator
 	    {
-	        this.transform.Translate(moveX, moveY, 0);
-	        mainCamera.transform.Translate(moveX, moveY, 0);
-	        movementByMouse = false;
+	        transform.Translate(moveX, moveY, 0);
+	        _mainCamera.transform.Translate(moveX, moveY, 0);
+	        _movementByMouse = false;
+	        _movementByItem = false;
+	        _moveToItem = null;
 	    }
 
 	    if (Input.GetMouseButtonDown(0))
 	    {
-            movementByMouse = true;
-            mouseMovementTarget = mainCamera.camera.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            _movementByMouse = true;
+            _mouseMovementTarget = _mainCamera.camera.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
 	    }
 
 	    if (Input.GetAxis("ItemPickup") > 0)
 	    {
-	        Transform closestItem = null;
-
-	        for (int i = 0; i < itemParent.childCount; i++)
+	        for (int i = 0; i < ItemParent.childCount; i++)
 	        {
-                Transform item = itemParent.GetChild(i);
+                Transform item = ItemParent.GetChild(i);
 
-	            if (Vector2.Distance(item.position, this.transform.position) < pickupDistance)
+	            if (Vector2.Distance(item.position, transform.position) < _pickupDistance)
 	            {
                     //ToDo: Send Item to inventory
                     Destroy(item.gameObject);
@@ -64,32 +67,32 @@ public class movement : MonoBehaviour
 	        }
 	    }
 
-        if (movementByItem && moveToItem != null && !movementByMouse)
+        if (_movementByItem && _moveToItem != null && !_movementByMouse)
 	    {
-            movementVector = (Vector2)(moveToItem.transform.position - this.transform.position);
+            movementVector = _moveToItem.transform.position - transform.position;
 	    }
 
-	    if (movementByMouse)
+	    if (_movementByMouse)
 	    {
-	        movementVector = (mouseMovementTarget - (Vector2) this.transform.position);
+	        movementVector = (_mouseMovementTarget - (Vector2) transform.position);
 	    }
 
-	    if (movementVector.magnitude < mouseStopDistance)
+	    if (movementVector.magnitude < _mouseStopDistance)
 	    {
-	        movementByMouse = false;
+	        _movementByMouse = false;
 
-	        if (movementByItem)
+	        if (_movementByItem)
 	        {
                 //ToDo: Send Item to inventory
-	            Destroy(moveToItem);
-	            movementByItem = false;
-	            moveToItem = null;
+	            Destroy(_moveToItem);
+	            _movementByItem = false;
+	            _moveToItem = null;
 	        }
 	    }
 	    else
 	    {
-	        this.transform.Translate(movementVector.normalized*movementSensitivity*Time.deltaTime);
-	        mainCamera.transform.Translate(movementVector.normalized*movementSensitivity*Time.deltaTime);
+	        transform.Translate(movementVector.normalized*_movementSensitivity*Time.deltaTime);
+	        _mainCamera.transform.Translate(movementVector.normalized*_movementSensitivity*Time.deltaTime);
 	    }
         
 	}
@@ -97,8 +100,8 @@ public class movement : MonoBehaviour
     //called by an item that is clicked
     public void ItemMovement(GameObject item)
     {
-        moveToItem = item;
-        movementByItem = true;
-        movementByMouse = false;
+        _moveToItem = item;
+        _movementByItem = true;
+        _movementByMouse = false;
     }
 }

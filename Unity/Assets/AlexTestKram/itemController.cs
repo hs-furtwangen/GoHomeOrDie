@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
-public class itemController : MonoBehaviour
+public class ItemController : MonoBehaviour
 {
 
     private GameObject player;
-    private movement playerMovementScript;
+    private Movement playerMovementScript;
 
 	// Use this for initialization
 	void Start ()
 	{
 	    player = GameObject.Find("/Player");
-	    playerMovementScript = player.GetComponent<movement>();
+	    playerMovementScript = player.GetComponent<Movement>();
 	}
 	
 	void OnMouseDown ()
