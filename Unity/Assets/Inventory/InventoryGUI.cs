@@ -6,7 +6,7 @@ public class InventoryGUI : MonoBehaviour {
 
 
 	private bool showInventory = true;
-	private Rect InventoryWindowRect = new Rect((Screen.width *0.5f)-(Screen.width*0.4f)/2, Screen.height*0.9f , Screen.width*0.4f, Screen.height*0.1f);
+	public Rect InventoryWindowRect = new Rect((Screen.width *0.5f)-(Screen.width*0.4f)/2, Screen.height*0.9f , Screen.width*0.4f, Screen.height*0.1f);
 
 	static public  int inventorySize = 7;
 	//private Dictionary<int, string> inventoryNameDictionary;
@@ -37,6 +37,7 @@ public class InventoryGUI : MonoBehaviour {
 		{
 			showInventory = !showInventory;
 		}
+
 	}
 
 	void OnGUI()
@@ -45,6 +46,8 @@ public class InventoryGUI : MonoBehaviour {
 		{
 			InventoryWindowRect = GUI.Window(0, InventoryWindowRect, InventoryWindowMethod, "");
 		}
+
+
 	}
 
 	void InventoryWindowMethod(int windowId)

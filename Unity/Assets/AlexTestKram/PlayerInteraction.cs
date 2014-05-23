@@ -61,6 +61,7 @@ public class PlayerInteraction : MonoBehaviour
 	            if (Vector2.Distance(item.position, transform.position) < _pickupDistance)
 	            {
                     //ToDo: Send Item to inventory
+					item.GetComponent<LootItem>().PickUp();
                     Destroy(item.gameObject);
 	            }
 
@@ -84,6 +85,7 @@ public class PlayerInteraction : MonoBehaviour
 	        if (_movementByItem)
 	        {
                 //ToDo: Send Item to inventory
+				_moveToItem.GetComponent<LootItem>().PickUp();
 	            Destroy(_moveToItem);
 	            _movementByItem = false;
 	            _moveToItem = null;
