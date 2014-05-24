@@ -7,6 +7,8 @@ public class MapGenerator : MonoBehaviour {
 	public int mapHeight = 64;
 	public Transform targetFolder;
 	public GameObject tilePrefab;
+	public Transform itemFolder;
+	public GameObject[] items;
 	public Sprite[] grassTiles;
 	public bool grassPassability = true;
 	public Sprite[] pathTiles;
@@ -97,6 +99,9 @@ public class MapGenerator : MonoBehaviour {
 
 		// And stones!
 		generateStones ();
+
+		// And items!
+		generateItems ();
 	}
 
     public int GetTileZIndex(float posY)
@@ -113,7 +118,6 @@ public class MapGenerator : MonoBehaviour {
 	/**
 	 * Generates a path and returns the amount of generated tiles
 	 */
-
 	uint generatePath()
 	{
 		uint amount = 1;
@@ -313,6 +317,29 @@ public class MapGenerator : MonoBehaviour {
 						createTileAt(x, y, 0, bankType);
 				}
 			}
+		}
+	}
+
+	void generateItems()
+	{
+		for (uint i = 0; i < items.Length; i++) {
+			// Generate random location
+			bool created = false;
+			do {
+				uint x = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getWidth()));
+				uint y = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getHeight()));
+				if(m_tileMap.getPassability(x, y)) {
+					Vector2 screenPos = m_tileMap.map2Screen(x, y);
+					//screenPos.y += (curSprite.rect.height - m_tileMap.m_tileHeight) / m_tileMap.m_tileHeight * 0.25f; 
+
+					GameObject cur = Instantiate(items[i], new Vector3(screenPos.x, screenPos.y, -2), Quaternion.identity) as GameObject;
+					cur.transform.parent = itemFolder;
+					cur.name = "Item-" + x + "x" + y;
+					cur.SetActive(true);
+					cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * 2 - y);
+					created = true;
+				}
+			} while(!created);
 		}
 	}
 
