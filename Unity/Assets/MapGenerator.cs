@@ -17,7 +17,13 @@ public class MapGenerator : MonoBehaviour {
 	public bool waterPassability = false;
 	public Sprite[] deepWaterTiles;
 	public bool deepWaterPassability = false;
-
+	public Sprite[] bankTopLeftTiles;
+	public Sprite[] bankBottomTiles;
+	public Sprite[] bankRightTiles;
+	public Sprite[] bankBottomLeftRightTiles;
+	public Sprite[] bankTopRightBottomRightTiles;
+	public bool bankPassability = false;
+	
 	private TileMap m_tileMap;
 
 	private enum TileType
@@ -28,6 +34,30 @@ public class MapGenerator : MonoBehaviour {
 		Tree,
 		Water,
 		WaterDeep,
+		Bank_TL,
+		Bank_TR,
+		Bank_BL,
+		Bank_BR,
+		Bank_Left,
+		Bank_Right,
+		Bank_Top,
+		Bank_Bottom,
+		Bank_BottomLeftRight,
+		Bank_TopLeftRight,
+		Bank_TopRightBottomRight,
+		Bank_TopLeftBottomLeft,
+	}
+	
+	private enum DirectionFlags
+	{
+		Top = 1 << 0,
+		Left = 1 << 1,
+		Down = 1 << 2,
+		Right = 1 << 3,
+		TopLeft = 1 << 4,
+		TopRight = 1 << 5,
+		BottomLeft = 1 << 6,
+		BottomRight = 1 << 7,
 	}
 
 	// Use this for initialization
@@ -50,6 +80,7 @@ public class MapGenerator : MonoBehaviour {
 		// Generate a lake
 		generateLake ();
 		generateDeepWater ();
+		generateShores();
 
 		// And trees!
 		generateTrees ();
@@ -204,6 +235,112 @@ public class MapGenerator : MonoBehaviour {
 		}
 	}
 
+	void generateShores()
+	{
+		for (uint x = 0; x < m_tileMap.getWidth(); x++) {
+			for(uint y = 0; y < m_tileMap.getHeight(); y++) {
+				// If this is not a water tile check if it is located at the shore
+				if(!isWater (x, y, 0) && !isBank(x, y, 0))
+				{
+					Vector2 tl = m_tileMap.getTopLeftOf(x, y);
+					Vector2 tr = m_tileMap.getTopRightOf(x, y);
+					Vector2 bl = m_tileMap.getBottomLeftOf(x, y);
+					Vector2 br = m_tileMap.getBottomRightOf(x, y);
+					Vector2 top = new Vector2(x, y+2);
+					Vector2 left = new Vector2(x-1, y);
+					Vector2 bottom = new Vector2(x, y-2);
+					Vector2 right = new Vector2(x+1, y);
+					int flags = 0;
+					if(isWater(top, 0))
+						flags |= (int)DirectionFlags.Down;
+					if(isWater(tl, 0))
+						flags |= (int)DirectionFlags.BottomRight;
+					if(isWater(left, 0))
+						flags |= (int)DirectionFlags.Right;
+					if(isWater(bl, 0))
+						flags |= (int)DirectionFlags.TopRight;
+					if(isWater(bottom, 0))
+						flags |= (int)DirectionFlags.Top;
+					if(isWater(br, 0))
+						flags |= (int)DirectionFlags.TopLeft;
+					if(isWater(right, 0))
+						flags |= (int)DirectionFlags.Left;
+					if(isWater(tr, 0))
+						flags |= (int)DirectionFlags.BottomLeft;
+					TileType bankType = getBankTile(flags);
+					if(bankType != TileType.None)
+						createTileAt(x, y, 0, bankType);
+				}
+			}
+		}
+	}
+
+	bool isWater(uint x, uint y, uint z)
+	{
+		return checkTile (x, y, z) == TileType.Water || checkTile (x, y, z) == TileType.WaterDeep;
+	}
+
+	bool isWater(Vector2 xy, uint z)
+	{
+		return isWater((uint)xy.x, (uint) xy.y, z);
+	}
+
+	bool isBank(uint x, uint y, uint z)
+	{
+		switch (checkTile (x, y, z)) {
+		case TileType.Bank_BL:
+		case TileType.Bank_Bottom:
+		case TileType.Bank_BottomLeftRight:
+		case TileType.Bank_BR:
+		case TileType.Bank_Left:
+		case TileType.Bank_Right:
+		case TileType.Bank_TL:
+		case TileType.Bank_Top:
+		case TileType.Bank_TopLeftBottomLeft:
+		case TileType.Bank_TopLeftRight:
+		case TileType.Bank_TopRightBottomRight:
+		case TileType.Bank_TR:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	bool isBank(Vector2 xy, uint z)
+	{
+		return isBank ((uint)xy.x, (uint)xy.y, z);
+	}
+
+	// flags needs to be ORed values of DirectionFlags
+	TileType getBankTile(int flags)
+	{
+		if ((flags & (int)DirectionFlags.TopLeft) != 0 && (flags & (int)DirectionFlags.TopRight) != 0)
+			return TileType.Bank_TopLeftRight;
+		if ((flags & (int)DirectionFlags.TopLeft) != 0 && (flags & (int)DirectionFlags.BottomLeft) != 0)
+			return TileType.Bank_TopLeftBottomLeft;
+		if ((flags & (int)DirectionFlags.BottomLeft) != 0 && (flags & (int)DirectionFlags.BottomRight) != 0)
+			return TileType.Bank_BottomLeftRight;
+		if ((flags & (int)DirectionFlags.BottomRight) != 0 && (flags & (int)DirectionFlags.TopRight) != 0)
+			return TileType.Bank_TopRightBottomRight;
+		if ((flags & (int)DirectionFlags.TopLeft) != 0)
+			return TileType.Bank_TL;
+		if ((flags & (int)DirectionFlags.BottomLeft) != 0)
+			return TileType.Bank_BL;
+		if ((flags & (int)DirectionFlags.BottomRight) != 0)
+			return TileType.Bank_BR;
+		if ((flags & (int)DirectionFlags.TopRight) != 0)
+			return TileType.Bank_TR;
+		if ((flags & (int)(DirectionFlags.Top)) != 0)
+			return TileType.Bank_Top;
+		if ((flags & (int)DirectionFlags.Left) != 0)
+			return TileType.Bank_Left;
+		if ((flags & (int)DirectionFlags.Down) != 0)
+			return TileType.Bank_Bottom;
+		if ((flags & (int)DirectionFlags.Right) != 0)
+			return TileType.Bank_Right;
+		return TileType.None;
+	}
+
 	void createTileAt(uint x, uint y, uint z, TileType type)
 	{
 		Sprite curSprite = grassTiles[0];
@@ -229,6 +366,58 @@ public class MapGenerator : MonoBehaviour {
 			curSprite = deepWaterTiles[Random.Range (0, deepWaterTiles.Length - 1)];
 			passability = deepWaterPassability;
 			break;
+		case TileType.Bank_TL:
+			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_TR:
+			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_BL:
+			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_BR:
+			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_Top:
+			curSprite = bankBottomTiles[Random.Range (0, bankBottomTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_Bottom:
+			curSprite = bankBottomTiles[Random.Range (0, bankBottomTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_Left:
+			curSprite = bankRightTiles[Random.Range (0, bankRightTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_Right:
+			curSprite = bankRightTiles[Random.Range (0, bankRightTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_BottomLeftRight:
+			curSprite = bankBottomLeftRightTiles[Random.Range (0, bankBottomLeftRightTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_TopLeftRight:
+			curSprite = bankBottomLeftRightTiles[Random.Range (0, bankRightTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_TopLeftBottomLeft:
+			curSprite = bankTopRightBottomRightTiles[Random.Range (0, bankTopRightBottomRightTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		case TileType.Bank_TopRightBottomRight:
+			curSprite = bankTopRightBottomRightTiles[Random.Range (0, bankTopRightBottomRightTiles.Length - 1)];
+			passability = bankPassability;
+			break;
+		default:
+			curSprite = grassTiles[Random.Range(0, grassTiles.Length-1)];
+			passability = grassPassability;
+			break;
 		}
 
 		Vector2 screenPos = m_tileMap.map2Screen(x, y);
@@ -240,26 +429,81 @@ public class MapGenerator : MonoBehaviour {
 		cur.SetActive(true);
 		cur.GetComponent<SpriteRenderer>().sprite = curSprite;
 		cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * z - y);
+
+		// Need to flip?
+		if (type == TileType.Bank_TR)
+			cur.GetComponent<Transform>().localScale = new Vector3(-1, 1, 1);
+		if (type == TileType.Bank_BL)
+			cur.GetComponent<Transform>().localScale = new Vector3(1, -1, 1);
+		if (type == TileType.Bank_BR)
+			cur.GetComponent<Transform>().localScale = new Vector3(-1, -1, 1);
+		if (type == TileType.Bank_Top)
+			cur.GetComponent<Transform>().localScale = new Vector3(1, -1, 1);
+		if (type == TileType.Bank_Left)
+			cur.GetComponent<Transform>().localScale = new Vector3(-1, 1, 1);
+		if (type == TileType.Bank_TopLeftRight)
+			cur.GetComponent<Transform>().localScale = new Vector3(1, -1, 1);
+		if (type == TileType.Bank_TopLeftBottomLeft)
+			cur.GetComponent<Transform>().localScale = new Vector3(-1, 1, 1);
 		
 		m_tileMap.setTile(x, y, z, cur);
 		m_tileMap.setPassability (x, y, passability);
 	}
 
+	void createTileAt(Vector2 xy, uint z, TileType type)
+	{
+		createTileAt ((uint)xy.x, (uint)xy.y, z, type);
+	}
+
 	TileType checkTile(uint x, uint y, uint z)
 	{
-		Sprite spr = m_tileMap.getTile (x, y, 0).GetComponent<SpriteRenderer> ().sprite;
+		GameObject go = m_tileMap.getTile(x, y, 0);
+		if (go == null)
+			return TileType.None;
+
+		Sprite spr = go.GetComponent<SpriteRenderer>().sprite;
+		Transform tr = go.GetComponent<Transform> ();
 		if (System.Array.IndexOf (grassTiles, spr) > -1)
-						return TileType.Grass;
-				else if (System.Array.IndexOf (pathTiles, spr) > -1)
-						return TileType.Path;
-				else if (System.Array.IndexOf (treeTiles, spr) > -1)
-						return TileType.Tree;
-				else if (System.Array.IndexOf (waterTiles, spr) > -1)
-						return TileType.Water;
-				else if (System.Array.IndexOf (deepWaterTiles, spr) > -1)
-						return TileType.WaterDeep;
+			return TileType.Grass;
+		else if (System.Array.IndexOf (pathTiles, spr) > -1)
+			return TileType.Path;
+		else if (System.Array.IndexOf (treeTiles, spr) > -1)
+			return TileType.Tree;
+		else if (System.Array.IndexOf (waterTiles, spr) > -1)
+			return TileType.Water;
+		else if (System.Array.IndexOf (deepWaterTiles, spr) > -1)
+			return TileType.WaterDeep;
+		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+			return TileType.Bank_TL;
+		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == 1)
+			return TileType.Bank_TR;
+		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == -1)
+			return TileType.Bank_BL;
+		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == -1)
+			return TileType.Bank_BR;
+		else if (System.Array.IndexOf (bankBottomTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+			return TileType.Bank_Bottom;
+		else if (System.Array.IndexOf (bankBottomTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == -1)
+			return TileType.Bank_Top;
+		else if (System.Array.IndexOf (bankRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+			return TileType.Bank_Right;
+		else if (System.Array.IndexOf (bankRightTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == 1)
+			return TileType.Bank_Left;
+		else if (System.Array.IndexOf (bankBottomLeftRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+			return TileType.Bank_BottomLeftRight;
+		else if (System.Array.IndexOf (bankBottomLeftRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == -1)
+			return TileType.Bank_TopLeftRight;
+		else if (System.Array.IndexOf (bankTopRightBottomRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+			return TileType.Bank_TopRightBottomRight;
+		else if (System.Array.IndexOf (bankTopRightBottomRightTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == 1)
+			return TileType.Bank_TopLeftBottomLeft;
 		else
 			return TileType.None;
+	}
+
+	TileType checkTile(Vector2 xy, uint z)
+	{
+		return checkTile ((uint)xy.x, (uint)xy.y, z);
 	}
 
 	bool isCoordValid(Vector2 coord)
