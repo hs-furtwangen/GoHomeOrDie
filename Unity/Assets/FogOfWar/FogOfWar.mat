@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: FogOfWar
-  m_Shader: {fileID: 4800000, guid: b44d67f701a93504c945d4cd5051e0c4, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1f325e8fc5c07474f8cae425d426f134, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -37,13 +37,33 @@ Material:
     m_Floats:
       data:
         first:
+          name: _FogRadius
+        second: 2.76999998
+      data:
+        first:
+          name: _FogMaxRadius
+        second: 1.04999995
+      data:
+        first:
           name: _Shininess
         second: .699999988
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: .250980407, g: .258823544, b: .176470593, a: 1}
+      data:
+        first:
+          name: _Player1_Pos
+        second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _Player2_Pos
+        second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _Player3_Pos
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _SpecColor
@@ -60,6 +80,10 @@ Material:
         first:
           name: _EmisColor
         second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
+          name: _PlayerPos
+        second: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1002 &2100001
 EditorExtensionImpl:
   serializedVersion: 6
