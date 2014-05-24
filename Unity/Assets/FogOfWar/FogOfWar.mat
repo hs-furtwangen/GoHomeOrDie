@@ -38,7 +38,7 @@ Material:
       data:
         first:
           name: _FogRadius
-        second: 2.76999998
+        second: 2
       data:
         first:
           name: _FogMaxRadius
