@@ -44,6 +44,23 @@ public class PlayerInteraction : MonoBehaviour
 	        _movementByMouse = false;
 	        _movementByItem = false;
 	        _moveToItem = null;
+
+	        this.gameObject.GetComponent<Animator>().SetBool("Moving", true);
+	        if (Mathf.Abs(moveX) > Mathf.Abs(moveY))
+	        {
+	            this.gameObject.GetComponent<Animator>().SetFloat("Horizontal", moveX);
+	            Debug.Log("moveX: " + moveX);
+	        }
+	        else if (Mathf.Abs(moveY) > Mathf.Abs(moveX))
+	        {
+	            this.gameObject.GetComponent<Animator>().SetFloat("Vertical", moveY);
+                Debug.Log("moveY: " + moveY);
+	        }
+
+	    }
+	    else
+	    {
+	        this.gameObject.GetComponent<Animator>().SetBool("Moving", false);
 	    }
 
 	    if (Input.GetMouseButtonDown(0))
