@@ -165,7 +165,7 @@ public class MapGenerator : MonoBehaviour {
 		for (uint x = 0; x < m_tileMap.getWidth(); x++) {
 			for(uint y = 0; y < m_tileMap.getHeight(); y++) {
 				if(checkTile(x, y, 0) == TileType.Grass)
-					treeProbability = 0.11f;
+					treeProbability = 0.2f;
 				if(Random.Range(0.0f, 1.0f) < treeProbability)
 					createTileAt(x, y, 1, TileType.Tree);
 				treeProbability = 0;
