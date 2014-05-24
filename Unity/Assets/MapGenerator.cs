@@ -85,8 +85,10 @@ public class MapGenerator : MonoBehaviour {
 		for(uint i = 0; i < m_tileMap.getWidth() + m_tileMap.getHeight();)
 			i += generatePath();
 
-		// Generate a lake
-		generateLake ();
+		// Generate lakes
+		uint amountOfLakes = m_tileMap.getWidth () * m_tileMap.getHeight() / 1000;
+		for(uint i = 0; i < amountOfLakes; i++)
+			generateLake();
 		generateDeepWater ();
 		generateShores();
 
