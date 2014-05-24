@@ -19,7 +19,7 @@ Properties {
 }
 
 SubShader {
-    Tags {"Queue"="Transparent"}
+    Tags {"Queue" = "Overlay"}
     LOD 200
     Lighting On
     ZWrite On
