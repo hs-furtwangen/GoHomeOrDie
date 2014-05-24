@@ -114,7 +114,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 98ee404e7b06c62469bc7993a68689f0, type: 3}
   grassPassability: 1
   pathTiles:
-  - {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
+  - {fileID: 21300000, guid: 8eaa016df252a194e8264468b5184896, type: 3}
   pathPassability: 1
   treeTiles:
   - {fileID: 21300000, guid: 32c41d954c8de6c4c9ca898d059100a2, type: 3}
@@ -143,11 +143,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 281fa79fc38b9c540a3ec4cb3e597c52, type: 3}
   bankRightTiles:
   - {fileID: 21300000, guid: bccb887a35eb22540904823b196f7df1, type: 3}
+  bankLeftTiles:
+  - {fileID: 21300000, guid: ceb89ccb61621b442b22d800949c14f3, type: 3}
   bankBottomLeftRightTiles:
   - {fileID: 21300000, guid: 2269837325d4fc2469eca356fc38e21b, type: 3}
   bankTopRightBottomRightTiles:
   - {fileID: 21300000, guid: 79df4d9aba665d04194bafe4a048daf1, type: 3}
   bankPassability: 0
+  stoneTiles:
+  - {fileID: 21300000, guid: b9b44ebf9b8dc6f4e86071fb424f485e, type: 3}
+  - {fileID: 21300000, guid: 1abb905d70b23b346a854564a2498315, type: 3}
+  stonePassability: 1
 --- !u!4 &277508882
 Transform:
   m_ObjectHideFlags: 0

@@ -24,9 +24,12 @@ public class MapGenerator : MonoBehaviour {
 	public Sprite[] bankTopTiles;
 	public Sprite[] bankBottomTiles;
 	public Sprite[] bankRightTiles;
+	public Sprite[] bankLeftTiles;
 	public Sprite[] bankBottomLeftRightTiles;
 	public Sprite[] bankTopRightBottomRightTiles;
 	public bool bankPassability = false;
+	public Sprite[] stoneTiles;
+	public bool stonePassability = true;
 	
 	private TileMap m_tileMap;
 
@@ -50,6 +53,7 @@ public class MapGenerator : MonoBehaviour {
 		Bank_TopLeftRight,
 		Bank_TopRightBottomRight,
 		Bank_TopLeftBottomLeft,
+		Stone,
 	}
 	
 	private enum DirectionFlags
@@ -88,6 +92,9 @@ public class MapGenerator : MonoBehaviour {
 
 		// And trees!
 		generateTrees ();
+
+		// And stones!
+		generateStones ();
 	}
 
 	/**
@@ -162,6 +169,22 @@ public class MapGenerator : MonoBehaviour {
 				if(Random.Range(0.0f, 1.0f) < treeProbability)
 					createTileAt(x, y, 1, TileType.Tree);
 				treeProbability = 0;
+			}
+		}
+	}
+
+	void generateStones()
+	{
+		for (uint x = 0; x < m_tileMap.getWidth(); x++) {
+			for(uint y = 0; y < m_tileMap.getHeight(); y++) {
+				if(checkTile(x, y, 1) == TileType.None)
+				{
+					float probability = 0.001f;
+					if(checkTile(x, y, 0) == TileType.Grass)
+						probability += 0.01f;
+					if(Random.Range(0.0f, 1.0f) < probability)
+						createTileAt(x, y, 1, TileType.Stone);
+				}
 			}
 		}
 	}
@@ -395,7 +418,7 @@ public class MapGenerator : MonoBehaviour {
 			passability = bankPassability;
 			break;
 		case TileType.Bank_Left:
-			curSprite = bankRightTiles[Random.Range (0, bankRightTiles.Length - 1)];
+			curSprite = bankLeftTiles[Random.Range (0, bankLeftTiles.Length - 1)];
 			passability = bankPassability;
 			break;
 		case TileType.Bank_Right:
@@ -418,6 +441,10 @@ public class MapGenerator : MonoBehaviour {
 			curSprite = bankTopRightBottomRightTiles[Random.Range (0, bankTopRightBottomRightTiles.Length - 1)];
 			passability = bankPassability;
 			break;
+		case TileType.Stone:
+			curSprite = stoneTiles[Random.Range(0, stoneTiles.Length-1)];
+			passability = stonePassability;
+			break;
 		default:
 			curSprite = grassTiles[Random.Range(0, grassTiles.Length-1)];
 			passability = grassPassability;
@@ -435,8 +462,6 @@ public class MapGenerator : MonoBehaviour {
 		cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * z - y);
 
 		// Need to flip?
-		if (type == TileType.Bank_Left)
-			cur.GetComponent<Transform>().localScale = new Vector3(-1, 1, 1);
 		if (type == TileType.Bank_TopLeftRight)
 			cur.GetComponent<Transform>().localScale = new Vector3(1, -1, 1);
 		if (type == TileType.Bank_TopLeftBottomLeft)
@@ -453,7 +478,7 @@ public class MapGenerator : MonoBehaviour {
 
 	TileType checkTile(uint x, uint y, uint z)
 	{
-		GameObject go = m_tileMap.getTile(x, y, 0);
+		GameObject go = m_tileMap.getTile(x, y, z);
 		if (go == null)
 			return TileType.None;
 
@@ -481,9 +506,9 @@ public class MapGenerator : MonoBehaviour {
 			return TileType.Bank_Bottom;
 		else if (System.Array.IndexOf (bankTopTiles, spr) > -1)
 			return TileType.Bank_Top;
-		else if (System.Array.IndexOf (bankRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+		else if (System.Array.IndexOf (bankRightTiles, spr) > -1)
 			return TileType.Bank_Right;
-		else if (System.Array.IndexOf (bankRightTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == 1)
+		else if (System.Array.IndexOf (bankLeftTiles, spr) > -1)
 			return TileType.Bank_Left;
 		else if (System.Array.IndexOf (bankBottomLeftRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
 			return TileType.Bank_BottomLeftRight;
@@ -493,6 +518,8 @@ public class MapGenerator : MonoBehaviour {
 			return TileType.Bank_TopRightBottomRight;
 		else if (System.Array.IndexOf (bankTopRightBottomRightTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == 1)
 			return TileType.Bank_TopLeftBottomLeft;
+		else if(System.Array.IndexOf (stoneTiles, spr) > -1)
+			return TileType.Stone;
 		else
 			return TileType.None;
 	}
