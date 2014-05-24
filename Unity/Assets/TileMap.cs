@@ -79,7 +79,7 @@ public class TileMap {
 		if (mY % 2 == 1)
 			mX -= 1.0f / 2.0f;
 
-		Vector2 result = new Vector2(mX, mY);
+		Vector2 result = new Vector2(mX, m_height-mY);
 		return result;
 	}
 

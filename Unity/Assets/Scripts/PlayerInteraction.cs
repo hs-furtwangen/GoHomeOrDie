@@ -14,6 +14,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private GameObject _moveToItem;
     private float _pickupDistance;
+    private GameObject _mapGenerator;
+    private MapGenerator _mapGeneratorScript;
 
 // ReSharper disable once UnusedMember.Local
 	void Start ()
@@ -25,11 +27,15 @@ public class PlayerInteraction : MonoBehaviour
         _mouseMovementTarget = new Vector2();
 	    _mouseStopDistance = 0.15f;
 	    _pickupDistance = _mouseStopDistance*2;
+        _mapGenerator = GameObject.FindGameObjectWithTag("MapGenerator");
+	    _mapGeneratorScript = _mapGenerator.GetComponent<MapGenerator>();
 	}
 	
 // ReSharper disable once UnusedMember.Local
 	void Update ()
 	{
+
+        this.gameObject.GetComponent<SpriteRenderer>().sortingOrder = _mapGeneratorScript.GetTileZIndex(this.transform.position.y);
 	    if(GameState.TheState == GameState.State.playing)
 		{
 			PlayerAction();

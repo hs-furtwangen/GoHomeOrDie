@@ -99,9 +99,17 @@ public class MapGenerator : MonoBehaviour {
 		generateStones ();
 	}
 
+    public int GetTileZIndex(float posY)
+    {
+        int bla = (int)m_tileMap.screen2Map(0, posY).y;
+        Debug.Log(bla);
+        return bla;
+    }
+
 	/**
 	 * Generates a path and returns the amount of generated tiles
 	 */
+
 	uint generatePath()
 	{
 		uint amount = 1;
