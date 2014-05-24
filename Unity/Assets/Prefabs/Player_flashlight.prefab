@@ -12,7 +12,7 @@ GameObject:
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player_flashlight
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,6 +55,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemParent: {fileID: 0}
+  _movementSensitivity: 0
+  _mainCamera: {fileID: 0}
+  _movementByMouse: 0
+  _movementByItem: 0
+  _mouseMovementTarget: {x: 0, y: 0}
+  _mouseStopDistance: 0
+  _moveToItem: {fileID: 0}
+  _pickupDistance: 0
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
