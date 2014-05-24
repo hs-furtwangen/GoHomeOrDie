@@ -52,7 +52,6 @@ public class InventoryGUI : MonoBehaviour {
 	{
 		if(Input.GetKeyUp(KeyCode.I))
 		{
-            Debug.Log("bla");
 			if(showInventory)
 			{
 				showInventory = false;
@@ -94,7 +93,6 @@ public class InventoryGUI : MonoBehaviour {
                 {
                     if (GUI.Button(currentRect, InventoryContent[i].icon))
                     {
-                        Debug.Log("click");
                         UseItem(i);
                     }
                 }
