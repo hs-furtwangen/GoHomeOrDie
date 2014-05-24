@@ -23,12 +23,12 @@ public class DummyGuiStyle : MonoBehaviour
 	    _buttonBackground = new Texture[10];
         _inventoryContent = new Texture[10];
         _buttonActive = new bool[10];
+        GUI.skin = myCustomSkinThing;
 	}
 	
 	// Update is called once per frame
     void OnGUI()
     {
-        GUI.skin = myCustomSkinThing;
 
         for (int i = 0; i < 10; i++)
         {

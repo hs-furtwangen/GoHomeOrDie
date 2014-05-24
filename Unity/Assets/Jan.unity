@@ -165,52 +165,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
---- !u!1 &312965717
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 312965719}
-  - 114: {fileID: 312965718}
-  m_Layer: 0
-  m_Name: DummyGui
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &312965718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 312965717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 486838b67473dc24e9d8fda54703aa59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myCustomSkinThing: {fileID: 11400000, guid: f77c7e928afbd464092f31810b46d7fb, type: 2}
-  GuiBackground: {fileID: 2800000, guid: 89941f5b17cfd794c810825781dc283f, type: 3}
-  GuiItemBackgroundUp: {fileID: 2800000, guid: 4bec1a4f1f9190948b3c1f89bdc01a99, type: 3}
-  GuiItemBackgroundDown: {fileID: 2800000, guid: 1093740a5b53901438f5f32699b1501c,
-    type: 3}
-  GuiItemBackgroundFocus: {fileID: 2800000, guid: 4750e9ac108e9f1438245fb3b28d1d96,
-    type: 3}
-  DummyContent: {fileID: 2800000, guid: e341fe5d250f14f4b864b4e3b6787885, type: 3}
---- !u!4 &312965719
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 312965717}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .111246638, y: .769800007, z: -3.56762695}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
 --- !u!1 &573871198
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +258,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c734ceea94b620b44af31df6823efb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCustomSkinThing: {fileID: 11400000, guid: f77c7e928afbd464092f31810b46d7fb, type: 2}
+  GuiBackground: {fileID: 2800000, guid: 89941f5b17cfd794c810825781dc283f, type: 3}
+  GuiItemBackgroundUp: {fileID: 2800000, guid: 4bec1a4f1f9190948b3c1f89bdc01a99, type: 3}
+  GuiItemBackgroundDown: {fileID: 2800000, guid: 1093740a5b53901438f5f32699b1501c,
+    type: 3}
+  GuiItemBackgroundFocus: {fileID: 2800000, guid: 4750e9ac108e9f1438245fb3b28d1d96,
+    type: 3}
+  DummyContent: {fileID: 0}
 --- !u!1 &1120578968
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,6 +328,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 10da43d7d5045d341b6a704d8ce4de46, type: 2}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 2800000, guid: 5566dda89c2097649b065528e117f0d9, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 10da43d7d5045d341b6a704d8ce4de46, type: 2}
   m_RootGameObject: {fileID: 1568431547}
@@ -532,7 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemname: 
-  icon: {fileID: 2800000, guid: 0ba584aff2ace57419d57b5ed22d90f7, type: 3}
+  icon: {fileID: 2800000, guid: 5566dda89c2097649b065528e117f0d9, type: 3}
   description: 
 --- !u!114 &1568431551
 MonoBehaviour:
