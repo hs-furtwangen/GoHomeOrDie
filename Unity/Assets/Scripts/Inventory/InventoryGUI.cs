@@ -16,10 +16,9 @@ public class InventoryGUI : MonoBehaviour {
 
 	private bool showInventory = false;
 
-	static public  int inventorySize = 10;
-	//private Dictionary<int, string> inventoryNameDictionary;
-	//public static Dictionary<int, Texture2D> inventoryNameDictionary = new Dictionary<int, Texture2D>()
-	public List<ItemCreatorClass> InventoryContent = new List<ItemCreatorClass>()
+    private const int _inventorySize = 10;
+
+    public List<ItemCreatorClass> InventoryContent = new List<ItemCreatorClass>()
 	{
 		{null},
         {null},
@@ -33,14 +32,19 @@ public class InventoryGUI : MonoBehaviour {
 		{null}
 	};
 
-	//ItemClass itemObject = new ItemClass();
+    public static int InventorySize
+    {
+        get { return _inventorySize; }
+    }
+
+    //ItemClass itemObject = new ItemClass();
 
 
 	// Use this for initialization
 	void Start () {
-        _buttonBackground = new Texture[10];
-        _buttonActive = new bool[10];
-        //GUI.skin = myCustomSkinThing;
+        _buttonBackground = new Texture[InventorySize];
+        _buttonActive = new bool[InventorySize];
+
 	}
 
 	// Update is called once per frame
@@ -64,9 +68,11 @@ public class InventoryGUI : MonoBehaviour {
 
 	void OnGUI()
 	{
+        GUI.skin = myCustomSkinThing;
+
 		if (showInventory) 
 		{
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < InventorySize; i++)
             {
                 var currentRect = new Rect(Screen.width / 2 - 160 + (i * 32), Screen.height - 34, 32, 32);
                 if (currentRect.Contains(Event.current.mousePosition))
@@ -76,18 +82,22 @@ public class InventoryGUI : MonoBehaviour {
                 else if (InventoryContent[i] != null)
                 {
                     _buttonBackground[i] = GuiItemBackgroundDown;
-                    if (GUI.Button(currentRect, InventoryContent[i].icon))
-                    {
-                        UseItem(i);
-                    }
                 }
                 else
                 {
                     _buttonBackground[i] = GuiItemBackgroundUp;
                 }
 
-
                 GUI.DrawTexture(currentRect, _buttonBackground[i]);
+
+                if (InventoryContent[i] != null)
+                {
+                    if (GUI.Button(currentRect, InventoryContent[i].icon))
+                    {
+                        Debug.Log("click");
+                        UseItem(i);
+                    }
+                }
             }
 
             GUI.DrawTexture(new Rect(Screen.width / 2 - 180, Screen.height - 36, 360, 36), GuiBackground);
@@ -96,7 +106,7 @@ public class InventoryGUI : MonoBehaviour {
 
 	void InventoryWindowMethod(int windowId)
 	{
-		for (int i = 0; i < inventorySize; i++)
+		for (int i = 0; i < InventorySize; i++)
 		{
 			if(InventoryContent[i] != null)
 			{
