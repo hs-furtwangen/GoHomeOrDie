@@ -131,10 +131,14 @@ MonoBehaviour:
   deepWaterPassability: 0
   bankTopLeftTiles:
   - {fileID: 21300000, guid: 6edcf7f1dfdbead408b38e917f23bebb, type: 3}
-  bankTopTiles:
+  bankBottomTiles:
   - {fileID: 21300000, guid: 281fa79fc38b9c540a3ec4cb3e597c52, type: 3}
-  bankLeftTiles:
+  bankRightTiles:
   - {fileID: 21300000, guid: bccb887a35eb22540904823b196f7df1, type: 3}
+  bankBottomLeftRightTiles:
+  - {fileID: 21300000, guid: 2269837325d4fc2469eca356fc38e21b, type: 3}
+  bankTopRightBottomRightTiles:
+  - {fileID: 21300000, guid: 79df4d9aba665d04194bafe4a048daf1, type: 3}
   bankPassability: 0
 --- !u!4 &277508882
 Transform:
