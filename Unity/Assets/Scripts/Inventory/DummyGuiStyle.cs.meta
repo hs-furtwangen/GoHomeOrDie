@@ -2,7 +2,17 @@ fileFormatVersion: 2
 guid: 486838b67473dc24e9d8fda54703aa59
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - myCustomSkinThing: {fileID: 11400000, guid: f77c7e928afbd464092f31810b46d7fb,
+      type: 2}
+  - GuiBackground: {fileID: 2800000, guid: 89941f5b17cfd794c810825781dc283f, type: 3}
+  - GuiItemBackgroundUp: {fileID: 2800000, guid: 4bec1a4f1f9190948b3c1f89bdc01a99,
+      type: 3}
+  - GuiItemBackgroundDown: {fileID: 2800000, guid: 1093740a5b53901438f5f32699b1501c,
+      type: 3}
+  - GuiItemBackgroundFocus: {fileID: 2800000, guid: 4750e9ac108e9f1438245fb3b28d1d96,
+      type: 3}
+  - DummyContent: {fileID: 2800000, guid: e341fe5d250f14f4b864b4e3b6787885, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
