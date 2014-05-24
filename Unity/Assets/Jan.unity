@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f30feea02f4644799b3a6591a6ce56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapWidth: 32
+  mapHeight: 64
   targetFolder: {fileID: 1244600851}
   tilePrefab: {fileID: 100000, guid: ce0141ccb89c3d348b498184afa0c4e2, type: 2}
   grassTiles:

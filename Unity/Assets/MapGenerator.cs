@@ -3,6 +3,8 @@ using System.Collections;
 
 public class MapGenerator : MonoBehaviour {
 
+	public int mapWidth = 32;
+	public int mapHeight = 64;
 	public Transform targetFolder;
 	public GameObject tilePrefab;
 	public Sprite[] grassTiles;
@@ -25,7 +27,7 @@ public class MapGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		m_tileMap = new TileMap (16, 32, 2);
+		m_tileMap = new TileMap ((uint)mapWidth, (uint)mapHeight, 2);
 
 		// For now just fill everything with the same tile
 		for (uint i = 0; i < m_tileMap.getWidth(); i++)
