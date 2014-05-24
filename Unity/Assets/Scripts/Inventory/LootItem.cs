@@ -24,7 +24,7 @@ public class LootItem : MonoBehaviour {
 
 	public void PickUp()
 	{
-		for(int i = 0; i < InventoryGUI.inventorySize; i++)
+		for(int i = 0; i < InventoryGUI.InventorySize; i++)
 		{
 
 			if(inventoryList[i] == null)

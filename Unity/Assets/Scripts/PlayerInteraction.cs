@@ -186,16 +186,12 @@ public class PlayerInteraction : MonoBehaviour
 		}
 		else
 		{
-
-            Debug.Log(_mapGeneratorScript.isPassable((movementVector.normalized * _movementSensitivity * Time.deltaTime) + (Vector2)transform.position));
 		    if (_mapGeneratorScript.isPassable((movementVector.normalized*_movementSensitivity*Time.deltaTime) + (Vector2) transform.position))
 		    {
                 transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
                 _mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
 		    }
-
 		}
-
 	}
 
 	public void GuiControl()
