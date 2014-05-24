@@ -8,10 +8,15 @@ public class MapGenerator : MonoBehaviour {
 	public Transform targetFolder;
 	public GameObject tilePrefab;
 	public Sprite[] grassTiles;
+	public bool grassPassability = true;
 	public Sprite[] pathTiles;
+	public bool pathPassability = true;
 	public Sprite[] treeTiles;
+	public bool treePassability = false;
 	public Sprite[] waterTiles;
+	public bool waterPassability = false;
 	public Sprite[] deepWaterTiles;
+	public bool deepWaterPassability = false;
 
 	private TileMap m_tileMap;
 
@@ -116,9 +121,9 @@ public class MapGenerator : MonoBehaviour {
 	{
 		float treeProbability = 0;
 		for (uint x = 0; x < m_tileMap.getWidth(); x++) {
-			for(uint y = 0; y < m_tileMap.getHeight(); y ++) {
+			for(uint y = 0; y < m_tileMap.getHeight(); y++) {
 				if(checkTile(x, y, 0) == TileType.Grass)
-					treeProbability = 0.1f;
+					treeProbability = 0.11f;
 				if(Random.Range(0.0f, 1.0f) < treeProbability)
 					createTileAt(x, y, 1, TileType.Tree);
 				treeProbability = 0;
@@ -202,21 +207,27 @@ public class MapGenerator : MonoBehaviour {
 	void createTileAt(uint x, uint y, uint z, TileType type)
 	{
 		Sprite curSprite = grassTiles[0];
+		bool passability = true;
 		switch (type) {
 		case TileType.Grass:
 			curSprite = grassTiles[Random.Range(0, grassTiles.Length-1)];
+			passability = grassPassability;
 			break;
 		case TileType.Path:
 			curSprite = pathTiles[Random.Range(0, pathTiles.Length-1)];
+			passability = pathPassability;
 			break;
 		case TileType.Tree:
 			curSprite = treeTiles[Random.Range(0, treeTiles.Length-1)];
+			passability = treePassability;
 			break;
 		case TileType.Water:
 			curSprite = waterTiles[Random.Range (0, waterTiles.Length - 1)];
+			passability = waterPassability;
 			break;
 		case TileType.WaterDeep:
 			curSprite = deepWaterTiles[Random.Range (0, deepWaterTiles.Length - 1)];
+			passability = deepWaterPassability;
 			break;
 		}
 
@@ -231,6 +242,7 @@ public class MapGenerator : MonoBehaviour {
 		cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * z - y);
 		
 		m_tileMap.setTile(x, y, z, cur);
+		m_tileMap.setPassability (x, y, passability);
 	}
 
 	TileType checkTile(uint x, uint y, uint z)

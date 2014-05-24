@@ -112,16 +112,21 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6d06477eb3ae3e8498162b2e46cbc260, type: 3}
   - {fileID: 21300000, guid: 4b4facfa2b825034d9e0ab17f3910460, type: 3}
   - {fileID: 21300000, guid: 98ee404e7b06c62469bc7993a68689f0, type: 3}
+  grassPassability: 1
   pathTiles:
   - {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
+  pathPassability: 1
   treeTiles:
   - {fileID: 21300000, guid: 8731b47f20f360644bbff20e79c3e67d, type: 3}
+  treePassability: 0
   waterTiles:
   - {fileID: 21300000, guid: 24ddb6f4a5ef3aa49b30a716f5e08401, type: 3}
   - {fileID: 21300000, guid: ba53961319191b640960677180627b64, type: 3}
   - {fileID: 21300000, guid: 2e4187712f3c45744ae9023f4034fea5, type: 3}
+  waterPassability: 0
   deepWaterTiles:
   - {fileID: 21300000, guid: 7df8e79c0fa101a4fb4a0347544b717a, type: 3}
+  deepWaterPassability: 0
 --- !u!4 &277508882
 Transform:
   m_ObjectHideFlags: 0
