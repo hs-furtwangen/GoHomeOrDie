@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class InventoryGUI : MonoBehaviour {
 
 
-	private bool showInventory = true;
+	private bool showInventory = false;
 	private Rect InventoryWindowRect = new Rect((Screen.width *0.5f)-(Screen.width*0.4f)/2, Screen.height*0.9f , Screen.width*0.4f, Screen.height*0.1f);
 
 	static public  int inventorySize = 7;
@@ -35,7 +35,18 @@ public class InventoryGUI : MonoBehaviour {
 	{
 		if(Input.GetKeyUp(KeyCode.I))
 		{
-			showInventory = !showInventory;
+			if(showInventory)
+			{
+				showInventory = false;
+				GameState.TheState = GameState.State.playing;
+			}
+			else
+			{
+				showInventory = true;
+				GameState.TheState = GameState.State.paused;
+
+			}
+
 		}
 
 	}
@@ -59,7 +70,7 @@ public class InventoryGUI : MonoBehaviour {
 				if(GUI.Button( new Rect((Screen.height*0.1f)*i, 0, Screen.height*0.1f,Screen.height*0.1f), inventoryList[i].icon))
 				{
 					//Mit dem Object was machen
-					inventoryList[i] = null;
+					UseItem(i);
 				}
 			}
 			else
@@ -67,6 +78,11 @@ public class InventoryGUI : MonoBehaviour {
 				GUI.Button( new Rect((Screen.height*0.1f)*i, 0, Screen.height*0.1f,Screen.height*0.1f), string.Empty);
 			}
 		}
+	}
+
+	void UseItem(int i)
+	{
+		inventoryList[i] = null;
 	}
 
 }
