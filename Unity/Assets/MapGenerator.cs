@@ -18,6 +18,10 @@ public class MapGenerator : MonoBehaviour {
 	public Sprite[] deepWaterTiles;
 	public bool deepWaterPassability = false;
 	public Sprite[] bankTopLeftTiles;
+	public Sprite[] bankTopRightTiles;
+	public Sprite[] bankBottomLeftTiles;
+	public Sprite[] bankBottomRightTiles;
+	public Sprite[] bankTopTiles;
 	public Sprite[] bankBottomTiles;
 	public Sprite[] bankRightTiles;
 	public Sprite[] bankBottomLeftRightTiles;
@@ -371,19 +375,19 @@ public class MapGenerator : MonoBehaviour {
 			passability = bankPassability;
 			break;
 		case TileType.Bank_TR:
-			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			curSprite = bankTopRightTiles[Random.Range (0, bankTopRightTiles.Length - 1)];
 			passability = bankPassability;
 			break;
 		case TileType.Bank_BL:
-			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			curSprite = bankBottomLeftTiles[Random.Range (0, bankBottomLeftTiles.Length - 1)];
 			passability = bankPassability;
 			break;
 		case TileType.Bank_BR:
-			curSprite = bankTopLeftTiles[Random.Range (0, bankTopLeftTiles.Length - 1)];
+			curSprite = bankBottomRightTiles[Random.Range (0, bankBottomRightTiles.Length - 1)];
 			passability = bankPassability;
 			break;
 		case TileType.Bank_Top:
-			curSprite = bankBottomTiles[Random.Range (0, bankBottomTiles.Length - 1)];
+			curSprite = bankTopTiles[Random.Range (0, bankTopTiles.Length - 1)];
 			passability = bankPassability;
 			break;
 		case TileType.Bank_Bottom:
@@ -431,14 +435,6 @@ public class MapGenerator : MonoBehaviour {
 		cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * z - y);
 
 		// Need to flip?
-		if (type == TileType.Bank_TR)
-			cur.GetComponent<Transform>().localScale = new Vector3(-1, 1, 1);
-		if (type == TileType.Bank_BL)
-			cur.GetComponent<Transform>().localScale = new Vector3(1, -1, 1);
-		if (type == TileType.Bank_BR)
-			cur.GetComponent<Transform>().localScale = new Vector3(-1, -1, 1);
-		if (type == TileType.Bank_Top)
-			cur.GetComponent<Transform>().localScale = new Vector3(1, -1, 1);
 		if (type == TileType.Bank_Left)
 			cur.GetComponent<Transform>().localScale = new Vector3(-1, 1, 1);
 		if (type == TileType.Bank_TopLeftRight)
@@ -473,17 +469,17 @@ public class MapGenerator : MonoBehaviour {
 			return TileType.Water;
 		else if (System.Array.IndexOf (deepWaterTiles, spr) > -1)
 			return TileType.WaterDeep;
-		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1)
 			return TileType.Bank_TL;
-		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == 1)
+		else if (System.Array.IndexOf (bankTopRightTiles, spr) > -1 )
 			return TileType.Bank_TR;
-		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == -1)
+		else if (System.Array.IndexOf (bankBottomLeftTiles, spr) > -1 )
 			return TileType.Bank_BL;
-		else if (System.Array.IndexOf (bankTopLeftTiles, spr) > -1 && tr.localScale.x == -1 && tr.localScale.y == -1)
+		else if (System.Array.IndexOf (bankBottomRightTiles, spr) > -1)
 			return TileType.Bank_BR;
-		else if (System.Array.IndexOf (bankBottomTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
+		else if (System.Array.IndexOf (bankBottomTiles, spr) > -1)
 			return TileType.Bank_Bottom;
-		else if (System.Array.IndexOf (bankBottomTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == -1)
+		else if (System.Array.IndexOf (bankTopTiles, spr) > -1)
 			return TileType.Bank_Top;
 		else if (System.Array.IndexOf (bankRightTiles, spr) > -1 && tr.localScale.x == 1 && tr.localScale.y == 1)
 			return TileType.Bank_Right;
