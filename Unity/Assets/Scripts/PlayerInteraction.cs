@@ -34,6 +34,8 @@ public class PlayerInteraction : MonoBehaviour
 // ReSharper disable once UnusedMember.Local
 	void Update ()
 	{
+		bool passable = _mapGeneratorScript.isPassable(new Vector2(this.transform.position.x,this.transform.position.y)); 
+		Debug.Log (passable);
 
         this.gameObject.GetComponent<SpriteRenderer>().sortingOrder = _mapGeneratorScript.GetTileZIndex(this.transform.position.y);
 	    if(GameState.TheState == GameState.State.playing)

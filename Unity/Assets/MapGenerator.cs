@@ -101,10 +101,14 @@ public class MapGenerator : MonoBehaviour {
 
     public int GetTileZIndex(float posY)
     {
-        int bla = (int)m_tileMap.screen2Map(0, posY).y;
-        Debug.Log(bla);
-        return bla;
-    }
+		return (int)(m_tileMap.getHeight() - m_tileMap.screen2Map(0, posY).y);
+	}
+
+	public bool isPassable(Vector2 screenPos)
+	{
+		var mapPos = m_tileMap.screen2Map(screenPos.x, screenPos.y);
+		return m_tileMap.getPassability ((uint)mapPos.x, (uint)mapPos.y);
+	}
 
 	/**
 	 * Generates a path and returns the amount of generated tiles

@@ -74,12 +74,12 @@ public class TileMap {
 
 	public Vector2 screen2Map(float x, float y)
 	{
-		float mX = x;
-		float mY = y * 2.0f * (m_tileHeight / (float)m_tileWidth);
-		if (mY % 2 == 1)
-			mX -= 1.0f / 2.0f;
+		float mX = x + 0.5f;
+		float mY = y * 4 + 1f;
+		if (((int)mY) % 2 == 1)
+			mX += 0.5f;
 
-		Vector2 result = new Vector2(mX, m_height-mY);
+		Vector2 result = new Vector2(mX, mY);
 		return result;
 	}
 
