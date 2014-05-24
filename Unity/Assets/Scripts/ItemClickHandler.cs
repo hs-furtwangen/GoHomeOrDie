@@ -11,7 +11,7 @@ public class ItemClickHandler : MonoBehaviour
 // ReSharper disable once UnusedMember.Local
 	void Start ()
 	{
-	    _player = GameObject.Find("/Player");
+	    _player = GameObject.FindGameObjectWithTag("Player");
 	    _playerMovementScript = _player.GetComponent<PlayerInteraction>();
 	}
 	
@@ -19,5 +19,6 @@ public class ItemClickHandler : MonoBehaviour
 	void OnMouseDown ()
 	{
 	    _playerMovementScript.ItemMovement(gameObject);
+        Debug.Log("I have been clicked");
     }
 }
