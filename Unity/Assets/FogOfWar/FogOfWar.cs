@@ -4,45 +4,98 @@ using System.IO;
 
 public class FogOfWar : MonoBehaviour
 {
+    // INSPECTOR VARIABLES
     public float TargetAlpha = 0.75f;
  
     public float RevSpeed = 0.8f;
     public float HideSpeed = 0.5f;
+    public float HideTime = 1f;
 
     public GameObject Revealer;  
 
     public int TexSize;
+
+    public int RevInnerRadius;
     public int RevRadius;
 
+    public float speed;
+
+    // PRIVATE VARIABLES
     private Vector3 _lastPos;
 
-    private Color[] _colArr; 
+    private Color[] _colArr;
+    private Color[] _colArrCur;
+    private Color[] _colArrMask;
+
     private Texture2D _mainTex;
+    private Texture2D[] _perlinTex;
 
     private int _texWidth;
     private int _texHeight;
 
-    private HashSet<int> _pixToRev;
-    private HashSet<int> _pixToHide;
+    private Dictionary<int,float> _pixToRev;
+    private Dictionary<int,Vector2> _pixToHide;
 
+    private Vector2[] _perlinSpeed;
+
+    // CONST VARIBALES
+    private Color cloudColor = Color.white;
+    
+    private int octaves = 6;
+    private float persistence = 0.6f;
+    
+    private float contrastLow = 0f;
+    private float contrastHigh = 1f;
+    private float brightnessOffset = 0f;
+
+    // METHODS
     internal void Start()
     {
-        _pixToRev = new HashSet<int>();
-        _pixToHide = new HashSet<int>();
+        _pixToRev = new Dictionary<int,float>();
+        _pixToHide = new Dictionary<int,Vector2>();
 
         _texWidth = (int) transform.localScale.z * TexSize;
         _texHeight = (int) transform.localScale.x * TexSize;
 
         _mainTex = new Texture2D(_texHeight, _texWidth, TextureFormat.Alpha8, false);
+
         _colArr = _mainTex.GetPixels(0);
+        _colArrCur = _mainTex.GetPixels(0);
+        _colArrMask = _mainTex.GetPixels(0);
 
         for (var i = 0; i < _colArr.Length; i++)
-            _colArr[i] = new Color(0, 0, 0, TargetAlpha);
+        {
+            _colArr [i] = new Color(0, 0, 0, 1 - TargetAlpha);
+            _colArrCur[i] = new Color(0, 0, 0, TargetAlpha);
+            _colArrMask [i] = new Color(0, 0, 0, 0);
+        }
        
-        _mainTex.SetPixels(_colArr, 0);
+        _mainTex.SetPixels(_colArrCur, 0);
         _mainTex.Apply(false);
 
-        renderer.material.mainTexture = _mainTex;
+        for (var i = 0; i < renderer.materials.Length - 1; i++)
+        {
+            renderer.materials [i].SetTexture("_AlphaMask", _mainTex);
+            renderer.materials [i].SetFloat("_DefaultAlpha", 1.0f);
+        }
+
+        // Perlin Noises
+        _perlinTex = new Texture2D[renderer.materials.Length];
+        _perlinSpeed = new Vector2[renderer.materials.Length];
+
+        for (var i = 0; i < renderer.materials.Length; i++)
+        {
+            _perlinTex [i] = new Texture2D(512, 512, TextureFormat.ARGB32, false);
+            _perlinSpeed [i] = new Vector2(Random.Range(-10,10), Random.Range(-10,10));
+
+            GenerateCloudNoise(ref _perlinTex[i], 256, 256, Random.Range(0, 1000), Random.Range(1, 7));
+            renderer.materials [i].mainTexture = _perlinTex [i];
+
+            var offVec = new Vector2(Random.Range(-1, 1)/100f, Random.Range(-1, 1)/100f);
+            renderer.materials [i].SetVector("_TexOffset", offVec);
+        }
+
+        _lastPos = new Vector3(-99, -99, -99);
     }
 
     internal void Update()
@@ -50,74 +103,105 @@ public class FogOfWar : MonoBehaviour
         bool redraw = false;
 
         var playerPos = Revealer.transform.position;
+        var diffPos = playerPos - transform.position;
+        
+        var width = transform.localScale.z * 10;
+        var height = transform.localScale.x * 10;
+        
+        var localPos = diffPos + new Vector3(width / 2.0f, -height / 2.0f, 0);
+        
+        var pixPosX = (int)((localPos.x / height) * _texHeight);
+        var pixPosY = (int)-((localPos.y / width) * _texWidth);
+        var pixPos = new Vector2(pixPosX, pixPosY);
+
+        float inRad = TexSize / RevInnerRadius;
+        float outRad = TexSize / RevRadius;       
 
         if (playerPos != _lastPos)
         {
-            var diffPos = playerPos - transform.position;
+            for (var x = pixPosX - outRad; x <= pixPosX + outRad; x++)
+                for (var y = pixPosY - outRad; y <= pixPosY + outRad; y++) {
+                    var pixInd = (int)(x * _texHeight + y);
 
-            var width = transform.localScale.z * 10;
-            var height = transform.localScale.x * 10;
+                    var posV = new Vector2(x, y);
+                    var dist = Vector2.Distance(posV, pixPos);
 
-            var localPos = diffPos + new Vector3(width / 2.0f, -height / 2.0f, 0);
+                    if (dist <= outRad) {
+                        var alpha = 0f;
 
-            var pixPosX = (int)((localPos.x / height) * _texHeight);
-            var pixPosY = (int)-((localPos.y / width) * _texWidth);
-            var pixPos = new Vector2(pixPosX, pixPosY);
+                        if (dist > inRad)
+                            alpha = (dist - inRad) / (outRad - inRad);
 
-            var radius = TexSize / RevRadius;
+                        if (pixInd >= 0 && pixInd < _colArr.Length) {
+                            _colArrCur[pixInd].a = Mathf.Min(alpha, _colArrCur[pixInd].a);
+                            _colArr[pixInd].a = 1 - _colArrCur[pixInd].a;;
+                            _colArrMask[pixInd].a = Random.Range(1.05f, 1.10f);
 
-            for (var x = pixPosX - radius; x <= pixPosX + radius; x++)
-                for (var y = pixPosY - radius; y <= pixPosY + radius; y++) {
-                    var dist = Vector2.Distance(new Vector2(x, y), pixPos);
-
-                    if (dist <= radius) {
-                        var pixInd = (int)(x * _texHeight + y);
-
-                        if (pixInd >= 0 && pixInd < _colArr.Length)
-                            UniquePush(ref _pixToRev, pixInd);
+                            UniquePush(ref _pixToHide, pixInd, posV);
+                        }
                     }
                 }
 
-            renderer.material.SetVector("_PlayerPos", playerPos);
+            for (var i = 0; i < renderer.materials.Length; i++)
+                renderer.materials[i].SetVector("_PlayerPos", playerPos);
 
             redraw = true;
             _lastPos = playerPos;
         }
 
-        // reveal within a few seconds
+        // reveal for a few seconds
         var itemToDelete = new HashSet<int>();
 
-        foreach (var pixToRev in _pixToRev)
-        {
-            _colArr[pixToRev].a -= RevSpeed*Time.deltaTime;
-            
-            if (_colArr[pixToRev].a <= 0)
+        /*
+            var itemToChange = new Dictionary<int,float>();
+
+            foreach (var pixToRev in _pixToRev)
             {
-                _colArr [pixToRev].a = Random.Range(-0.1f, 0);
+                var newTime = pixToRev.Value - Time.deltaTime;
 
-                itemToDelete.Add(pixToRev);
-                UniquePush(ref _pixToHide, pixToRev);
+                if (newTime < 0)
+                    itemToDelete.Add(pixToRev.Key);
+                else
+                    itemToChange.Add(pixToRev.Key, newTime);
             }
-            
-            redraw = true;
-        }
 
-        foreach (var item in itemToDelete)
-            _pixToRev.Remove(item);
+            foreach (var item in itemToChange)
+                _pixToRev [item.Key] = item.Value;
 
-        // hide after a few seconds
+            foreach (var item in itemToDelete)
+                _pixToRev.Remove(item);
+        */
+
+        // hide within a few seconds
         itemToDelete.Clear();
 
         foreach (var pixToHide in _pixToHide)
         {
-            _colArr[pixToHide].a += HideSpeed*Time.deltaTime;
+            var dist = Vector2.Distance(pixToHide.Value, pixPos);
 
-            if (_colArr[pixToHide].a >= TargetAlpha)
-            {
-                _colArr[pixToHide].a = TargetAlpha;
-                itemToDelete.Add(pixToHide);
+            if (dist < inRad)
+                continue;
+
+            _colArrMask[pixToHide.Key].a -= HideSpeed*Time.deltaTime;
+            _colArrCur[pixToHide.Key].a = 1 - (_colArr[pixToHide.Key].a * 
+                                               Mathf.Min(1, _colArrMask[pixToHide.Key].a));
+
+            if (dist > inRad) {
+                var maxAlpha = ((dist - inRad) / (outRad - inRad));
+
+                if (_colArrCur[pixToHide.Key].a > maxAlpha)
+                    _colArrCur[pixToHide.Key].a = maxAlpha;
             }
 
+            if (_colArrCur[pixToHide.Key].a >= TargetAlpha)
+            {
+                _colArrCur[pixToHide.Key].a = TargetAlpha;
+                _colArr[pixToHide.Key].a = TargetAlpha;
+                _colArrMask[pixToHide.Key].a = 0;
+
+                itemToDelete.Add(pixToHide.Key);
+            }
+            
             redraw = true;
         }
 
@@ -127,14 +211,57 @@ public class FogOfWar : MonoBehaviour
         // redraw texture
         if (redraw)
         {
-            _mainTex.SetPixels(_colArr, 0);
+            _mainTex.SetPixels(_colArrCur, 0);
             _mainTex.Apply(false);
+        }
+
+        // moving perlin noises
+        for (var i = 0; i < renderer.materials.Length; i++)
+        {
+            var mainTexOff = renderer.materials [i].GetVector("_TexOffset");
+
+            var offVec = new Vector2(mainTexOff.x + _perlinSpeed [i].x * Time.deltaTime * speed/10000,
+                                     mainTexOff.y + _perlinSpeed [i].y * Time.deltaTime * speed/10000);
+
+            renderer.materials [i].SetVector("_TexOffset", offVec);
         }
     }
 
-    private static void UniquePush(ref HashSet<int> arr, int elementToAdd)
+    private static void UniquePush(ref Dictionary<int,Vector2> arr, int elementToAdd, Vector2 position)
     {
-        if (!arr.Contains(elementToAdd))
-            arr.Add(elementToAdd);
+        if (!arr.ContainsKey(elementToAdd))
+            arr.Add(elementToAdd, position);
+    }
+
+    private static void UniquePush(ref Dictionary<int,float> arr, int elementToAdd, float time)
+    {
+        if (!arr.ContainsKey(elementToAdd))
+            arr.Add(elementToAdd, time);
+    }   
+
+    void GenerateCloudNoise(ref Texture2D tex, int noiseWidth, int noiseHeight, int seed, int scale) {
+        float[,] perlinNoise = PerlinNoise.GeneratePerlinNoise(seed, octaves, persistence, noiseWidth, noiseHeight);
+        float noiseValue;
+
+        for(int y = 0; y < noiseWidth; y++) {  
+            for(int x = 0; x < noiseHeight; x++) {         
+                noiseValue = perlinNoise[x, y];
+                noiseValue *= SimplexNoise.SeamlessNoise((float) x / (float) _texWidth, (float) y / (float) _texHeight, scale, scale, 0f);
+                
+                noiseValue = Mathf.Clamp(noiseValue, contrastLow, contrastHigh + contrastLow) - contrastLow;
+                noiseValue = Mathf.Clamp(noiseValue, 0f, 1f);
+                
+                float r = Mathf.Clamp(cloudColor.r + brightnessOffset, 0f, 1f);
+                float g = Mathf.Clamp(cloudColor.g + brightnessOffset, 0f, 1f);
+                float b = Mathf.Clamp(cloudColor.b + brightnessOffset, 0f, 1f);
+                
+                tex.SetPixel(x, y, new Color(r, g, b, noiseValue));
+                tex.SetPixel(511 - x, y, new Color(r, g, b, noiseValue));
+                tex.SetPixel(x, 511 - y, new Color(r, g, b, noiseValue));
+                tex.SetPixel(511 - x, 511 - y, new Color(r, g, b, noiseValue));
+            }
+        }
+        
+        tex.Apply();
     }
 }

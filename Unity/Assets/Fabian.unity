@@ -175,6 +175,10 @@ Renderer:
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
   - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
+  - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
+  - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
+  - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
+  - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -214,10 +218,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetAlpha: .949999988
   RevSpeed: 3
-  HideSpeed: .200000003
+  HideSpeed: .0199999996
+  HideTime: 300
   Revealer: {fileID: 1251749190}
-  TexSize: 256
-  RevRadius: 4
+  TexSize: 128
+  RevInnerRadius: 5
+  RevRadius: 3
+  speed: 7
 --- !u!1 &801182623
 GameObject:
   m_ObjectHideFlags: 0
