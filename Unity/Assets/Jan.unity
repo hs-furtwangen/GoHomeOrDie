@@ -117,7 +117,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 056e741c54c2df048b7ec6b8b06c7116, type: 3}
   pathPassability: 1
   treeTiles:
-  - {fileID: 21300000, guid: 8731b47f20f360644bbff20e79c3e67d, type: 3}
+  - {fileID: 21300000, guid: 32c41d954c8de6c4c9ca898d059100a2, type: 3}
+  - {fileID: 21300000, guid: 75714228209087b41890a586971a85ec, type: 3}
+  - {fileID: 21300000, guid: b980eaf3ce817974aab9a45c26d3ed80, type: 3}
   treePassability: 0
   waterTiles:
   - {fileID: 21300000, guid: 24ddb6f4a5ef3aa49b30a716f5e08401, type: 3}
