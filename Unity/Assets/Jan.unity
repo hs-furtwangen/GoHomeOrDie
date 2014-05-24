@@ -120,12 +120,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 32c41d954c8de6c4c9ca898d059100a2, type: 3}
   - {fileID: 21300000, guid: 75714228209087b41890a586971a85ec, type: 3}
   - {fileID: 21300000, guid: b980eaf3ce817974aab9a45c26d3ed80, type: 3}
-  treePassability: 0
+  treePassability: 1
   waterTiles:
   - {fileID: 21300000, guid: 24ddb6f4a5ef3aa49b30a716f5e08401, type: 3}
   - {fileID: 21300000, guid: ba53961319191b640960677180627b64, type: 3}
   - {fileID: 21300000, guid: 2e4187712f3c45744ae9023f4034fea5, type: 3}
-  waterPassability: 0
+  waterPassability: 1
   deepWaterTiles:
   - {fileID: 21300000, guid: 7df8e79c0fa101a4fb4a0347544b717a, type: 3}
   deepWaterPassability: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2269837325d4fc2469eca356fc38e21b, type: 3}
   bankTopRightBottomRightTiles:
   - {fileID: 21300000, guid: 79df4d9aba665d04194bafe4a048daf1, type: 3}
-  bankPassability: 0
+  bankPassability: 1
   stoneTiles:
   - {fileID: 21300000, guid: b9b44ebf9b8dc6f4e86071fb424f485e, type: 3}
   - {fileID: 21300000, guid: 1abb905d70b23b346a854564a2498315, type: 3}

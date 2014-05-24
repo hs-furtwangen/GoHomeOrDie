@@ -34,10 +34,7 @@ public class PlayerInteraction : MonoBehaviour
 // ReSharper disable once UnusedMember.Local
 	void Update ()
 	{
-		bool passable = _mapGeneratorScript.isPassable(new Vector2(this.transform.position.x,this.transform.position.y)); 
-		Debug.Log (passable);
-
-        this.gameObject.GetComponent<SpriteRenderer>().sortingOrder = _mapGeneratorScript.GetTileZIndex(this.transform.position.y);
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = _mapGeneratorScript.GetTileZIndex(transform.position.y);
 	    if(GameState.TheState == GameState.State.playing)
 		{
 			PlayerAction();
@@ -71,9 +68,12 @@ public class PlayerInteraction : MonoBehaviour
 		if ((moveX != 0 || moveY != 0) && GameState.State.playing == GameState.TheState)
 			// ReSharper restore CompareOfFloatsByEqualityOperator
 		{
-			transform.Translate(moveX, moveY, 0);
-			_mainCamera.transform.Translate(moveX, moveY, 0);
-			_movementByMouse = false;
+		    if (_mapGeneratorScript.isPassable(new Vector2(moveX, moveY) + (Vector2) transform.position))
+		    {
+		        transform.Translate(moveX, moveY, 0);
+		        _mainCamera.transform.Translate(moveX, moveY, 0);
+		    }
+		    _movementByMouse = false;
 			_movementByItem = false;
 			_moveToItem = null;
 			
@@ -186,8 +186,14 @@ public class PlayerInteraction : MonoBehaviour
 		}
 		else
 		{
-			transform.Translate(movementVector.normalized*_movementSensitivity*Time.deltaTime);
-			_mainCamera.transform.Translate(movementVector.normalized*_movementSensitivity*Time.deltaTime);
+
+            Debug.Log(_mapGeneratorScript.isPassable((movementVector.normalized * _movementSensitivity * Time.deltaTime) + (Vector2)transform.position));
+		    if (_mapGeneratorScript.isPassable((movementVector.normalized*_movementSensitivity*Time.deltaTime) + (Vector2) transform.position))
+		    {
+                transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
+                _mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
+		    }
+
 		}
 
 	}
