@@ -12,15 +12,17 @@ public class DummyGuiStyle : MonoBehaviour
     public Texture GuiItemBackgroundFocus;
     public Texture DummyContent;
 
-    private bool[] _buttonActive;
     private Texture[] _buttonBackground;
     private Texture[] _inventoryContent;
+    private bool[] _buttonActive;
+
+    private GameObject _mainCamera;
 
 	// Use this for initialization
 	void Start () {
-	    _buttonActive = new bool[10];
 	    _buttonBackground = new Texture[10];
         _inventoryContent = new Texture[10];
+        _buttonActive = new bool[10];
 	}
 	
 	// Update is called once per frame
@@ -28,12 +30,10 @@ public class DummyGuiStyle : MonoBehaviour
     {
         GUI.skin = myCustomSkinThing;
 
-        _buttonActive[5] = true;
-        _inventoryContent[5] = DummyContent;
-
         for (int i = 0; i < 10; i++)
         {
-            if (_buttonActive[i])
+            var currentRect = new Rect(Screen.width / 2 - 160 + (i * 32), Screen.height - 34, 32, 32);
+            if (currentRect.Contains(Event.current.mousePosition))
             {
                 _buttonBackground[i] = GuiItemBackgroundFocus;
             }
@@ -46,9 +46,8 @@ public class DummyGuiStyle : MonoBehaviour
                 _buttonBackground[i] = GuiItemBackgroundUp;
             }
 
-
-            _buttonActive[i] = GUI.Button(new Rect(Screen.width / 2 - 160 + (i*32), Screen.height - 34, 32, 32), _inventoryContent[i]);
-            GUI.DrawTexture(new Rect(Screen.width / 2 - 160 + (i * 32), Screen.height - 34, 32, 32), _buttonBackground[i]);
+            _buttonActive[i] = GUI.Button(currentRect, _inventoryContent[i]);
+            GUI.DrawTexture(currentRect, _buttonBackground[i]);
         }
         
         GUI.DrawTexture(new Rect(Screen.width/2 - 180,Screen.height - 36,360,36), GuiBackground);
