@@ -6,7 +6,7 @@ public class InventoryGUI : MonoBehaviour {
 
 
 	private bool showInventory = true;
-	public Rect InventoryWindowRect = new Rect((Screen.width *0.5f)-(Screen.width*0.4f)/2, Screen.height*0.9f , Screen.width*0.4f, Screen.height*0.1f);
+	private Rect InventoryWindowRect = new Rect((Screen.width *0.5f)-(Screen.width*0.4f)/2, Screen.height*0.9f , Screen.width*0.4f, Screen.height*0.1f);
 
 	static public  int inventorySize = 7;
 	//private Dictionary<int, string> inventoryNameDictionary;

@@ -1,20 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography.X509Certificates;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class LootItem : MonoBehaviour {
 	
-	public GameObject inventoryGUI;
+	private GameObject inventoryGUI;
 	
-	public string name;
+	public string itemname;
 	public Texture icon;
 	public string description;
 	private List<ItemCreatorClass> inventoryList = new List<ItemCreatorClass>();
 
 
 	ItemCreatorClass icc;
-	void Start () 
+	void Start ()
 	{
+	    inventoryGUI = GameObject.FindGameObjectWithTag("Player");
 		icc = new ItemCreatorClass(name, icon, description);
 		inventoryList = inventoryGUI.GetComponent<InventoryGUI>().inventoryList;
 	}
