@@ -12,6 +12,7 @@ public class TileMap {
 		m_height = height;
 		m_layers = layers;
 		m_tiles = new GameObject[m_width,m_height,layers];
+		m_passability = new bool[m_width,m_height];
 	}
 
 	public uint getWidth()
@@ -22,6 +23,11 @@ public class TileMap {
 	public uint getHeight()
 	{
 		return m_height;
+	}
+
+	public uint getLayers()
+	{
+		return m_layers;
 	}
 
 	public void setTile(uint x, uint y, uint z, GameObject tile)
@@ -42,6 +48,17 @@ public class TileMap {
 			return null;
 	}
 
+	public void setPassability(uint x, uint y, bool passable)
+	{
+		if (x < m_width && y < m_height)
+			m_passability [x, y] = passable;
+	}
+
+	public bool getPassability(uint x, uint y)
+	{
+		return x < m_width && y < m_height && m_passability [x, y] == true;
+	}
+
 	public Vector2 map2Screen(uint x, uint y)
 	{
 		if (x < m_width && y < m_height) {
@@ -57,10 +74,10 @@ public class TileMap {
 
 	public Vector2 screen2Map(float x, float y)
 	{
-		float mX = x;
-		float mY = y * 2.0f * (m_tileHeight / (float)m_tileWidth);
-		if (mY % 2 == 1)
-			mX -= 1.0f / 2.0f;
+		float mX = x + 0.5f;
+		float mY = y * 4 + 1f;
+		if (((int)mY) % 2 == 1)
+			mX += 0.5f;
 
 		Vector2 result = new Vector2(mX, mY);
 		return result;
@@ -95,7 +112,7 @@ public class TileMap {
 		if (y % 2 == 1)
 			return new Vector2 (x, y - 1);
 		else
-			return new Vector2 (x - 1, y - 1);
+			return new Vector2 (x + 1, y - 1);
 	}
 	
 
@@ -103,4 +120,5 @@ public class TileMap {
 	private uint m_height;
 	private uint m_layers;
 	private GameObject[,,] m_tiles;
+	private bool[,] m_passability;
 }
