@@ -330,13 +330,13 @@ public class MapGenerator : MonoBehaviour {
 				uint y = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getHeight()));
 				if(m_tileMap.getPassability(x, y)) {
 					Vector2 screenPos = m_tileMap.map2Screen(x, y);
-					//screenPos.y += (curSprite.rect.height - m_tileMap.m_tileHeight) / m_tileMap.m_tileHeight * 0.25f; 
+					screenPos.y += (items[i].GetComponent<SpriteRenderer>().sprite.rect.height - m_tileMap.m_tileHeight) / m_tileMap.m_tileHeight * 0.25f; 
 
-					GameObject cur = Instantiate(items[i], new Vector3(screenPos.x, screenPos.y, -2), Quaternion.identity) as GameObject;
+					GameObject cur = Instantiate(items[i], new Vector3(screenPos.x, screenPos.y, -1), Quaternion.identity) as GameObject;
 					cur.transform.parent = itemFolder;
 					cur.name = "Item-" + x + "x" + y;
 					cur.SetActive(true);
-					cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * 2 - y);
+					cur.GetComponent<SpriteRenderer>().sortingOrder = (int)(m_tileMap.getHeight() * 1 - y);
 					created = true;
 				}
 			} while(!created);
