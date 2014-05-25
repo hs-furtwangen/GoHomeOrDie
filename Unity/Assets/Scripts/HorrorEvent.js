@@ -40,12 +40,12 @@ function Update ()
 
 function OnTriggerEnter()
 {
-	randomEvent = Random.Range(0, 2);
+	randomEvent = Random.Range(1, 2);
 	
 	//Ghost
 	if (randomEvent == 0)
 	{
-		Debug.Log("Spawn Ghost");
+		//Debug.Log("Spawn Ghost");
 		//Sanity -= 1;
 		ghostSound.transform.position = this.transform.position;
 		ghostSound.Play();
@@ -54,7 +54,7 @@ function OnTriggerEnter()
 	//Wolf
 	if (randomEvent == 1)
 	{
-		Debug.Log("Spawn Wolf");
+		//Debug.Log("Spawn Wolf");
 		//Sanity -= 1;
 		wolfSound.transform.position = this.transform.position;
 		wolfSound.Play();

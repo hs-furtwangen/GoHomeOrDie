@@ -55,7 +55,7 @@ SubShader {
         float alpha = tex2D(_AlphaMask, IN.uv_MainTex.xy).a * _DefaultAlpha;
         float dist = length(IN.location - _PlayerPos);
 
-        o.Albedo = tex2D(_MainTex, IN.uv_MainTex + _TexOffset).rgb;
+        o.Emission = tex2D(_MainTex, IN.uv_MainTex + _TexOffset).rgb;
         o.Alpha = clamp(tex2D(_MainTex, IN.uv_MainTex + _TexOffset).a * alpha, 0, 1);
     }
 
