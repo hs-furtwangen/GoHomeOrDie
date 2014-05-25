@@ -20,6 +20,8 @@ public class PlayerInteraction : MonoBehaviour
     private MapGenerator _mapGeneratorScript;
     private Animator _anim;
 
+    private MessageDisplay _messageDisplay;
+
 	private AudioSource curMovementSound = null;
 
 // ReSharper disable once UnusedMember.Local
@@ -35,6 +37,8 @@ public class PlayerInteraction : MonoBehaviour
         _mapGenerator = GameObject.FindGameObjectWithTag("MapGenerator");
 	    _mapGeneratorScript = _mapGenerator.GetComponent<MapGenerator>();
 	    _anim = gameObject.GetComponent<Animator>();
+	    var messageDisplayPrefab = GameObject.FindGameObjectWithTag("MessageDisplay");
+	    _messageDisplay = messageDisplayPrefab.GetComponent<MessageDisplay>();
 	}
 	
 // ReSharper disable once UnusedMember.Local
@@ -99,10 +103,14 @@ public class PlayerInteraction : MonoBehaviour
 		if ((moveX != 0 || moveY != 0) && GameState.State.playing == GameState.TheState && !animationBlock)
 			// ReSharper restore CompareOfFloatsByEqualityOperator
 		{
-		    if (_mapGeneratorScript.isPassable(new Vector2(moveX, moveY) + (Vector2) transform.position))
-		    {
-		        transform.Translate(moveX, moveY, 0);
-		        _mainCamera.transform.Translate(moveX, moveY, 0);
+			Vector2 checkPos = new Vector2(moveX, moveY) + (Vector2) transform.position;
+			if (_mapGeneratorScript.isPassable(checkPos))
+			{
+				float mod = 1.0f;
+				if(_mapGeneratorScript.checkTile(_mapGeneratorScript.getGridCoordinates(checkPos), 0) == MapGenerator.TileType.Water)
+					mod = 0.5f;
+				transform.Translate(moveX * mod, moveY * mod, 0);
+				_mainCamera.transform.Translate(moveX * mod, moveY * mod, 0);
 		    }
 		    _movementByMouse = false;
 			_movementByItem = false;
@@ -152,9 +160,10 @@ public class PlayerInteraction : MonoBehaviour
 				if (Vector2.Distance(item.position, transform.position) < _pickupDistance)
 				{
                     PlayerAnimation("pickup");
+                    _messageDisplay.DisplayMessage("You picked something up!");
 					item.GetComponent<LootItem>().PickUp();
 					Destroy(item.gameObject);
-				}
+                }
 			}
 		}
 		
@@ -222,6 +231,7 @@ public class PlayerInteraction : MonoBehaviour
 			if (_movementByItem && _moveToItem != null)
 			{
                 PlayerAnimation("pickup");
+                _messageDisplay.DisplayMessage("You picked something up!");
 				_moveToItem.GetComponent<LootItem>().PickUp();
 				Destroy(_moveToItem);
 				_movementByItem = false;
@@ -232,8 +242,11 @@ public class PlayerInteraction : MonoBehaviour
 		{
 		    if (_mapGeneratorScript.isPassable((movementVector.normalized*_movementSensitivity*Time.deltaTime) + (Vector2) transform.position) && !animationBlock)
 		    {
-                transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
-                _mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
+				float mod = 1.0f;
+				if(_mapGeneratorScript.checkTile(_mapGeneratorScript.getGridCoordinates(transform.position), 0) == MapGenerator.TileType.Water)
+					mod = 0.5f;
+				transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime * mod);
+				_mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime * mod);
 		    }
 		}
 	}

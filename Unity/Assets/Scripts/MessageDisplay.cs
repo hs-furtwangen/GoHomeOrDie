@@ -9,10 +9,12 @@ public class MessageDisplay : MonoBehaviour
     public GUISkin MessageBoxGuiSkin;
     private float _messageBoxAlpha;
     private int _fadeDirection;
-    public float FadeTimer;
+    public float DisplayTimer;
+    private float _displayTimerMultiplier;
     private float _currentFadeTimer;
     public float FadeSpeed;
-    public bool _fadeing;
+    private bool _fadeing;
+    private string _message;
 
 	// Use this for initialization
 	void Start ()
@@ -20,7 +22,7 @@ public class MessageDisplay : MonoBehaviour
 	    _messageBoxAlpha = 0;
 	    _fadeDirection = 1;
 	    _fadeing = false;
-	    _currentFadeTimer = FadeTimer;
+	    _currentFadeTimer = DisplayTimer;
 	}
 
     void Update()
@@ -34,7 +36,7 @@ public class MessageDisplay : MonoBehaviour
                 if (_currentFadeTimer < 0)
                 {
                     _fadeDirection *= -1;
-                    _currentFadeTimer = FadeTimer;
+                    _currentFadeTimer = DisplayTimer;
                 }
                 Debug.Log("FadeTimer: " + _currentFadeTimer);
             }
@@ -61,9 +63,15 @@ public class MessageDisplay : MonoBehaviour
 
 
 	        GUI.DrawTexture(messageBoxPosition, MessageBoxBackground);
-	        GUI.Label(messageBoxPosition, "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
+	        GUI.Label(messageBoxPosition, _message);
 	    }
 	}
 
+    public void DisplayMessage(string msg, int durationMultiplier=1)
+    {
+        _currentFadeTimer = _currentFadeTimer*durationMultiplier;
+        _fadeing = true;
+        _message = msg;
+    }
 
 }

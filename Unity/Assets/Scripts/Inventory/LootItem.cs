@@ -8,7 +8,8 @@ public class LootItem : MonoBehaviour {
 	private GameObject inventoryGUI;
 	
 	public string itemname;
-	public Texture icon;
+	private Texture icon;
+    public Sprite iconSprite;
 	public string description;
 	private List<ItemCreatorClass> inventoryList = new List<ItemCreatorClass>();
 
@@ -16,9 +17,19 @@ public class LootItem : MonoBehaviour {
 	ItemCreatorClass icc;
 	void Start ()
 	{
-	    inventoryGUI = GameObject.FindGameObjectWithTag("Player");
-		icc = new ItemCreatorClass(name, icon, description);
-		inventoryList = inventoryGUI.GetComponent<InventoryGUI>().InventoryContent;
+        var icon = new Texture2D((int)iconSprite.rect.width, (int)iconSprite.rect.height);
+
+        var pixels = iconSprite.texture.GetPixels((int)iconSprite.textureRect.x,
+        (int)iconSprite.textureRect.y,
+        (int)iconSprite.textureRect.width,
+        (int)iconSprite.textureRect.height);
+
+        icon.SetPixels(pixels);
+        icon.Apply();
+
+        inventoryGUI = GameObject.FindGameObjectWithTag("Player");
+		icc = new ItemCreatorClass(itemname, icon, description);
+        inventoryList = inventoryGUI.GetComponent<InventoryGUI>().InventoryContent;
 	}
 
 

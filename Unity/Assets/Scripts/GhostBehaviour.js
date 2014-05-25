@@ -2,6 +2,7 @@
 
 var Char : GameObject;
 var speed : float;
+var setSanity_Script : setSanity;
 
 function Start()
 {
@@ -25,8 +26,8 @@ function ghostControler()
 
 function OnCollisionEnter(collision : Collision) 
 {
-	//Sanity -= 2;
 	//Sound
-	Debug.Log("BOOOOO");
+	//Debug.Log("BOOOOO");
+	setSanity_Script.sanity -= 2;
 	Destroy(transform.parent.gameObject);
 }

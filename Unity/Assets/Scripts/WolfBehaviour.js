@@ -7,6 +7,7 @@ var hitWolf : boolean;
 var counter : int;
 var startTime;
 var timer : int;
+var setSanity_Script : setSanity;
 
 function Start()
 {
@@ -37,8 +38,8 @@ function wolfControler()
 
 function OnCollisionEnter(collision : Collision) 
 {
-	//Sanity -= 2;
 	//Sound
+	setSanity_Script.sanity -= 2;
 	hitWolf = true;
 }
 
