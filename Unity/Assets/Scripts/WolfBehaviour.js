@@ -10,7 +10,7 @@ var timer : int;
 
 function Start()
 {
-	Char = GameObject.Find("Char").gameObject;
+	Char = GameObject.Find("Player").gameObject;
 	speed = 0.3;
 	knockBack = 0.15;
 	hitWolf = false;

@@ -3,10 +3,9 @@
 var Char : GameObject;
 var speed : float;
 
-
 function Start()
 {
-	Char = GameObject.Find("Char").gameObject;
+	Char = GameObject.Find("Player").gameObject;
 	speed = 0.01;
 }
 
