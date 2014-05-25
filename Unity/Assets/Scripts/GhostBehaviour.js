@@ -27,6 +27,6 @@ function OnCollisionEnter(collision : Collision)
 {
 	//Sanity -= 2;
 	//Sound
-	Debug.Log("BOOOOO");
+	//Debug.Log("BOOOOO");
 	Destroy(transform.parent.gameObject);
 }
