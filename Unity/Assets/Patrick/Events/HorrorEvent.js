@@ -36,7 +36,7 @@ function Update ()
 
 function OnTriggerEnter()
 {
-	randomEvent = Random.Range(0, 2);
+	randomEvent = Random.Range(1, 2);
 	
 	//Ghost
 	if (randomEvent == 0)
