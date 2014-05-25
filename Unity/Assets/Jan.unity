@@ -941,7 +941,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
-  Priority: 170
+  Priority: 183
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
