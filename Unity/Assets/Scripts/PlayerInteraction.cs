@@ -40,7 +40,6 @@ public class PlayerInteraction : MonoBehaviour
 // ReSharper disable once UnusedMember.Local
 	void Update ()
 	{
-        Debug.Log(_anim.GetBool("AnimationBlock"));
         if (Input.GetKeyDown(KeyCode.K))
         {
             PlayerAnimation("death");

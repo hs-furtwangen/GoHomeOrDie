@@ -1,14 +1,129 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: MapGenerator
+  m_TagString: MapGenerator
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.07724833, y: 1.05448377, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99f30feea02f4644799b3a6591a6ce56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapWidth: 32
+  mapHeight: 64
+  targetFolder: {fileID: 0}
+  tilePrefab: {fileID: 100000, guid: ce0141ccb89c3d348b498184afa0c4e2, type: 2}
+  itemFolder: {fileID: 0}
+  items:
+  - {fileID: 100000, guid: 10da43d7d5045d341b6a704d8ce4de46, type: 2}
+  - {fileID: 100000, guid: 44aa8d8d3c550b04097f6e9b1dbb9c8d, type: 2}
+  grassTiles:
+  - {fileID: 21300000, guid: 3a045bf227a6e8b4a92771404c4fe01f, type: 3}
+  - {fileID: 21300000, guid: d1eeef648c4d04c43aff74a110c7c671, type: 3}
+  - {fileID: 21300000, guid: 64040d47f8248c34b833e7b780ecaed8, type: 3}
+  - {fileID: 21300000, guid: 6d06477eb3ae3e8498162b2e46cbc260, type: 3}
+  - {fileID: 21300000, guid: 4b4facfa2b825034d9e0ab17f3910460, type: 3}
+  - {fileID: 21300000, guid: 98ee404e7b06c62469bc7993a68689f0, type: 3}
+  grassPassability: 1
+  pathCrossTiles:
+  - {fileID: 21300000, guid: 8eaa016df252a194e8264468b5184896, type: 3}
+  pathTopLeftBottomRightTiles:
+  - {fileID: 21300000, guid: c686709cd95cd4240bf1aba2bd0d7933, type: 3}
+  pathTopRightBottomLeftTiles:
+  - {fileID: 21300000, guid: 8e332f5bebe978b4f97d02af148b1c24, type: 3}
+  pathTopLeftBottomLeftTiles:
+  - {fileID: 21300000, guid: 72faa84cf4342a5409a917787fe34513, type: 3}
+  pathTopLeftTopRightTiles:
+  - {fileID: 21300000, guid: 95985986d5fc7874290d58554a28e5a1, type: 3}
+  pathTopRightBottomRightTiles:
+  - {fileID: 21300000, guid: 046b6cbba36995442855f6f72249fa63, type: 3}
+  pathBottomLeftBottomRightTiles:
+  - {fileID: 21300000, guid: 2afbcc854bfe1a44aa4476c2d538b5a6, type: 3}
+  pathTopLeftEndTiles:
+  - {fileID: 21300000, guid: 135b430128fc4b944b4b7f08b49259a3, type: 3}
+  pathTopRightEndTiles:
+  - {fileID: 21300000, guid: 591225caf004e1c4e98e0cae69ef7146, type: 3}
+  pathBottomLeftEndTiles:
+  - {fileID: 21300000, guid: e0926666ba17eea43963c5a78c774ab1, type: 3}
+  pathBottomRightEndTiles:
+  - {fileID: 21300000, guid: b249f1e704e37364a961d6fd9f939417, type: 3}
+  pathPassability: 1
+  treeTiles:
+  - {fileID: 21300000, guid: 32c41d954c8de6c4c9ca898d059100a2, type: 3}
+  - {fileID: 21300000, guid: 75714228209087b41890a586971a85ec, type: 3}
+  - {fileID: 21300000, guid: b980eaf3ce817974aab9a45c26d3ed80, type: 3}
+  treePassability: 1
+  waterTiles:
+  - {fileID: 21300000, guid: 24ddb6f4a5ef3aa49b30a716f5e08401, type: 3}
+  - {fileID: 21300000, guid: ba53961319191b640960677180627b64, type: 3}
+  - {fileID: 21300000, guid: 2e4187712f3c45744ae9023f4034fea5, type: 3}
+  waterPassability: 1
+  deepWaterTiles:
+  - {fileID: 21300000, guid: 7df8e79c0fa101a4fb4a0347544b717a, type: 3}
+  deepWaterPassability: 0
+  bankTopLeftTiles:
+  - {fileID: 21300000, guid: 6edcf7f1dfdbead408b38e917f23bebb, type: 3}
+  bankTopRightTiles:
+  - {fileID: 21300000, guid: 24da9118302b8354c94cdfc59f18e926, type: 3}
+  bankBottomLeftTiles:
+  - {fileID: 21300000, guid: 9806b734741c78b409141f25e7ba1452, type: 3}
+  bankBottomRightTiles:
+  - {fileID: 21300000, guid: a28a7078c31f3094197d315aeaede549, type: 3}
+  bankTopTiles:
+  - {fileID: 21300000, guid: 6bacb992e985b9c4990f6004eefcedb8, type: 3}
+  bankBottomTiles:
+  - {fileID: 21300000, guid: 281fa79fc38b9c540a3ec4cb3e597c52, type: 3}
+  bankRightTiles:
+  - {fileID: 21300000, guid: bccb887a35eb22540904823b196f7df1, type: 3}
+  bankLeftTiles:
+  - {fileID: 21300000, guid: ceb89ccb61621b442b22d800949c14f3, type: 3}
+  bankBottomLeftRightTiles:
+  - {fileID: 21300000, guid: 2269837325d4fc2469eca356fc38e21b, type: 3}
+  bankTopRightBottomRightTiles:
+  - {fileID: 21300000, guid: 79df4d9aba665d04194bafe4a048daf1, type: 3}
+  bankPassability: 1
+  stoneTiles:
+  - {fileID: 21300000, guid: b9b44ebf9b8dc6f4e86071fb424f485e, type: 3}
+  - {fileID: 21300000, guid: 1abb905d70b23b346a854564a2498315, type: 3}
+  stonePassability: 1
 --- !u!1001 &100100000
 Prefab:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 0}
+  m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
   m_IsExploded: 1
