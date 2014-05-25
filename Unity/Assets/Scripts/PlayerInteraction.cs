@@ -4,6 +4,8 @@
 public class PlayerInteraction : MonoBehaviour
 {
     public Transform ItemParent;
+	public AudioSource[] movementSounds;
+	public AudioSource[] movementWaterSounds;
 
     private float _movementSensitivity;
     private GameObject _mainCamera;
@@ -16,6 +18,8 @@ public class PlayerInteraction : MonoBehaviour
     private float _pickupDistance;
     private GameObject _mapGenerator;
     private MapGenerator _mapGeneratorScript;
+
+	private AudioSource curMovementSound = null;
 
 // ReSharper disable once UnusedMember.Local
 	void Start ()
@@ -60,6 +64,19 @@ public class PlayerInteraction : MonoBehaviour
 	{
 		float moveX = Input.GetAxis("Horizontal")*_movementSensitivity*Time.deltaTime;
 		float moveY = Input.GetAxis("Vertical")*_movementSensitivity*Time.deltaTime;
+
+		// Play sound
+		if(moveX != 0 || moveY != 0)
+			if(curMovementSound == null || !curMovementSound.isPlaying) {
+				AudioSource sound;
+				if(_mapGeneratorScript.checkTile(_mapGeneratorScript.getGridCoordinates((Vector2)this.transform.position), 0) == MapGenerator.TileType.Water)
+					sound = movementWaterSounds[Random.Range(0, movementWaterSounds.Length-1)];
+				else
+					sound = movementSounds[Random.Range(0, movementSounds.Length-1)];
+				sound.transform.position = this.transform.position;
+				sound.Play();
+				curMovementSound = sound;
+			}
 		
 		Vector2 movementVector = Vector2.zero;
 		var anim = gameObject.GetComponent<Animator>();
@@ -140,6 +157,19 @@ public class PlayerInteraction : MonoBehaviour
 		
 		if (_movementByMouse || _movementByItem)
 		{
+			// Play sound
+			if(curMovementSound == null || !curMovementSound.isPlaying) {
+				AudioSource sound;
+				if(_mapGeneratorScript.checkTile(_mapGeneratorScript.getGridCoordinates((Vector2)this.transform.position), 0) == MapGenerator.TileType.Water)
+					sound = movementWaterSounds[Random.Range(0, movementWaterSounds.Length-1)];
+				else
+					sound = movementSounds[Random.Range(0, movementSounds.Length-1)];
+				sound.transform.position = this.transform.position;
+				sound.Play();
+				curMovementSound = sound;
+			}
+
+
 			Vector2[] compass = {Vector2.up, -Vector2.up, -Vector2.right, Vector2.right};
 			var maxDot = -Mathf.Infinity;
 			var ret = Vector2.zero;

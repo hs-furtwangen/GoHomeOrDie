@@ -45,7 +45,7 @@ public class MapGenerator : MonoBehaviour {
 	
 	private TileMap m_tileMap;
 
-	private enum TileType
+	public enum TileType
 	{
 		None,
 		Grass,
@@ -133,6 +133,11 @@ public class MapGenerator : MonoBehaviour {
 	{
 		var mapPos = m_tileMap.screen2Map(screenPos.x, screenPos.y);
 		return m_tileMap.getPassability ((uint)mapPos.x, (uint)mapPos.y);
+	}
+
+	public Vector2 getGridCoordinates(Vector2 screenPos)
+	{
+		return m_tileMap.screen2Map(screenPos.x, screenPos.y);
 	}
 
 	/**
@@ -594,7 +599,7 @@ public class MapGenerator : MonoBehaviour {
 		createTileAt ((uint)xy.x, (uint)xy.y, z, type);
 	}
 
-	TileType checkTile(uint x, uint y, uint z)
+	public TileType checkTile(uint x, uint y, uint z)
 	{
 		GameObject go = m_tileMap.getTile(x, y, z);
 		if (go == null)
@@ -662,7 +667,7 @@ public class MapGenerator : MonoBehaviour {
 			return TileType.None;
 	}
 
-	TileType checkTile(Vector2 xy, uint z)
+	public TileType checkTile(Vector2 xy, uint z)
 	{
 		return checkTile ((uint)xy.x, (uint)xy.y, z);
 	}
