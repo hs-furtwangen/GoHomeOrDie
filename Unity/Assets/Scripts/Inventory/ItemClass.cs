@@ -12,6 +12,5 @@ public class ItemCreatorClass
 		name = _name;
 		icon = _icon;
 		description = _description;
-		
 	}
 }
