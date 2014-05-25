@@ -3,7 +3,6 @@
 var Char : GameObject;
 var speed : float;
 
-
 function Start()
 {
 	Char = GameObject.Find("Player").gameObject;
@@ -28,6 +27,6 @@ function OnCollisionEnter(collision : Collision)
 {
 	//Sanity -= 2;
 	//Sound
-	Debug.Log("BOOOOO");
+	//Debug.Log("BOOOOO");
 	Destroy(transform.parent.gameObject);
 }

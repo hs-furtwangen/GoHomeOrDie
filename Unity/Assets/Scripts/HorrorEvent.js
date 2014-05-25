@@ -3,10 +3,12 @@
 var ghost : GameObject;
 var moveGhost : boolean;
 var Script_GhostBehaviour : GhostBehaviour;
+var ghostSound : AudioSource;
 
 var wolf : GameObject;
 var moveWolf : boolean;
 var Script_WolfBehaviour : WolfBehaviour;
+var wolfSound : AudioSource;
 
 public var randomEvent : int;
 
@@ -18,6 +20,8 @@ function Start ()
 	moveWolf = false;
 	Script_GhostBehaviour = ghost.GetComponent(GhostBehaviour);
 	Script_WolfBehaviour =  wolf.GetComponent(WolfBehaviour);
+	ghostSound = GameObject.Find("ghost").GetComponent(AudioSource);
+	wolfSound = GameObject.Find("wolf").GetComponent(AudioSource);
 }
 
 function Update ()
@@ -41,17 +45,21 @@ function OnTriggerEnter()
 	//Ghost
 	if (randomEvent == 0)
 	{
-		Debug.Log("Spawn Ghost");
+		//Debug.Log("Spawn Ghost");
 		//Sanity -= 1;
-		//Play ghost sound
+		ghostSound.transform.position = this.transform.position;
+		ghostSound.Play();
 		ghost.SetActive (true);
 	}
 	//Wolf
 	if (randomEvent == 1)
 	{
-		Debug.Log("Spawn Wolf");
+		//Debug.Log("Spawn Wolf");
 		//Sanity -= 1;
-		//Play wolf sound
+		wolfSound.transform.position = this.transform.position;
+		wolfSound.Play();
+		wolf.transform.position.z = -3.567627;
+		wolf.transform.localPosition.x = 14;
 		wolf.SetActive (true);
 	}
 	

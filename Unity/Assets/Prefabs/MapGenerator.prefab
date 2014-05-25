@@ -42,6 +42,7 @@ MonoBehaviour:
   mapHeight: 64
   targetFolder: {fileID: 0}
   tilePrefab: {fileID: 100000, guid: ce0141ccb89c3d348b498184afa0c4e2, type: 2}
+  eventPrefab: {fileID: 100002, guid: ca17169b060bd6649834809bda791b61, type: 2}
   itemFolder: {fileID: 0}
   items:
   - {fileID: 100000, guid: 10da43d7d5045d341b6a704d8ce4de46, type: 2}

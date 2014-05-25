@@ -59,6 +59,10 @@ public class PlayerInteraction : MonoBehaviour
 			PlayerAnimation("stop");
 			GuiControl();
 		}
+
+		// Always center camera on player
+		var oldPos = _mainCamera.transform.position;
+		_mainCamera.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, oldPos.z);
 	}
 
     //called by an item that is clicked

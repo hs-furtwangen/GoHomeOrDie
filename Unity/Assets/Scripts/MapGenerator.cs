@@ -7,6 +7,8 @@ public class MapGenerator : MonoBehaviour {
 	public int mapHeight = 64;
 	public Transform targetFolder;
 	public GameObject tilePrefab;
+	public GameObject eventPrefab;
+	public bool showEvents = false;
 	public Transform itemFolder;
 	public GameObject[] items;
 	public Sprite[] grassTiles;
@@ -122,6 +124,9 @@ public class MapGenerator : MonoBehaviour {
 
 		// And items!
 		generateItems ();
+
+		// And events!
+		generateEvents ();
 	}
 
     public int GetTileZIndex(float posY)
@@ -138,6 +143,42 @@ public class MapGenerator : MonoBehaviour {
 	public Vector2 getGridCoordinates(Vector2 screenPos)
 	{
 		return m_tileMap.screen2Map(screenPos.x, screenPos.y);
+	}
+
+	void generateEvents()
+	{
+		uint amountOfEvents = (uint)((m_tileMap.getWidth () * m_tileMap.getHeight ()) / 200.0f);
+
+		for(uint i = 0; i < amountOfEvents; i++)
+		{
+			bool takeCoords = false;
+			while(!takeCoords) {
+				// Random coordinate
+				uint x = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getWidth() - 1));
+				uint y = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getHeight() - 1));
+
+				// Bias towards grass tiles
+				float probability = 0;
+				if(checkTile(x, y, 0) == TileType.Grass)
+					probability = 0.8f;
+				if(checkTile(x, y, 0) == TileType.Water)
+					probability = 0.2f;
+				if(checkTile(x, y, 0) == TileType.PathCross)
+					probability = 0.3f;
+
+				if(Random.Range(0.0f, 1.0f) < probability)
+				{
+					takeCoords = true;
+					Vector2 screenPos = m_tileMap.map2Screen(x, y);
+					GameObject cur = Instantiate(eventPrefab, new Vector3(screenPos.x, screenPos.y, 0), Quaternion.identity) as GameObject;
+					cur.transform.parent = targetFolder;
+					cur.name = "Event-" + x + "x" + y;
+					cur.SetActive(true);
+					if(!showEvents)
+						cur.GetComponent<SpriteRenderer>().sprite = null;
+				}
+			}
+		}
 	}
 
 	/**
