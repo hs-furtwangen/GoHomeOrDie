@@ -55,7 +55,7 @@ function TimerStart()//Wolf despawn after 10 sec
 	 
 	if(timer > 10)
 	{ 
-		Destroy(transform.parent.gameObject);
+		//Destroy(transform.parent.gameObject);
 	}
 }
 
