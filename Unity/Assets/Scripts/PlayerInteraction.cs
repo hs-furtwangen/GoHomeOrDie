@@ -16,6 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     private float _pickupDistance;
     private GameObject _mapGenerator;
     private MapGenerator _mapGeneratorScript;
+    private Animator _anim;
 
 // ReSharper disable once UnusedMember.Local
 	void Start ()
@@ -29,11 +30,22 @@ public class PlayerInteraction : MonoBehaviour
 	    _pickupDistance = _mouseStopDistance*2;
         _mapGenerator = GameObject.FindGameObjectWithTag("MapGenerator");
 	    _mapGeneratorScript = _mapGenerator.GetComponent<MapGenerator>();
+	    _anim = gameObject.GetComponent<Animator>();
 	}
 	
 // ReSharper disable once UnusedMember.Local
 	void Update ()
 	{
+        Debug.Log(_anim.GetBool("AnimationBlock"));
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            PlayerAnimation("death");
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            PlayerAnimation("pickup");
+        }
+
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = _mapGeneratorScript.GetTileZIndex(transform.position.y);
 	    if(GameState.TheState == GameState.State.playing)
 		{
@@ -43,9 +55,7 @@ public class PlayerInteraction : MonoBehaviour
 		{
 			PlayerAnimation("stop");
 			GuiControl();
-
 		}
-        
 	}
 
     //called by an item that is clicked
@@ -58,14 +68,15 @@ public class PlayerInteraction : MonoBehaviour
 
 	public void PlayerAction()
 	{
+	    bool animationBlock = _anim.GetBool("AnimationBlock");
+
 		float moveX = Input.GetAxis("Horizontal")*_movementSensitivity*Time.deltaTime;
 		float moveY = Input.GetAxis("Vertical")*_movementSensitivity*Time.deltaTime;
 		
 		Vector2 movementVector = Vector2.zero;
-		var anim = gameObject.GetComponent<Animator>();
 		
 		// ReSharper disable CompareOfFloatsByEqualityOperator
-		if ((moveX != 0 || moveY != 0) && GameState.State.playing == GameState.TheState)
+		if ((moveX != 0 || moveY != 0) && GameState.State.playing == GameState.TheState && !animationBlock)
 			// ReSharper restore CompareOfFloatsByEqualityOperator
 		{
 		    if (_mapGeneratorScript.isPassable(new Vector2(moveX, moveY) + (Vector2) transform.position))
@@ -77,7 +88,7 @@ public class PlayerInteraction : MonoBehaviour
 			_movementByItem = false;
 			_moveToItem = null;
 			
-			anim.SetBool("Moving", true);
+			_anim.SetBool("Moving", true);
 			if (Mathf.Abs(moveX) > Mathf.Abs(moveY) )
 			{
 				if (moveX > 0)
@@ -100,14 +111,13 @@ public class PlayerInteraction : MonoBehaviour
 					PlayerAnimation("down");
 				}
 			}
-			
 		}
 		else
 		{
 			PlayerAnimation("stop");
 		}
 		
-		if (Input.GetMouseButtonDown(0) && GameState.State.playing == GameState.TheState)
+		if (Input.GetMouseButtonDown(0) && GameState.State.playing == GameState.TheState && !animationBlock)
 		{
 			_movementByMouse = true;
 			_mouseMovementTarget = _mainCamera.camera.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
@@ -121,10 +131,10 @@ public class PlayerInteraction : MonoBehaviour
 				
 				if (Vector2.Distance(item.position, transform.position) < _pickupDistance)
 				{
+                    PlayerAnimation("pickup");
 					item.GetComponent<LootItem>().PickUp();
 					Destroy(item.gameObject);
 				}
-				
 			}
 		}
 		
@@ -178,6 +188,7 @@ public class PlayerInteraction : MonoBehaviour
 			
 			if (_movementByItem && _moveToItem != null)
 			{
+                PlayerAnimation("pickup");
 				_moveToItem.GetComponent<LootItem>().PickUp();
 				Destroy(_moveToItem);
 				_movementByItem = false;
@@ -186,7 +197,7 @@ public class PlayerInteraction : MonoBehaviour
 		}
 		else
 		{
-		    if (_mapGeneratorScript.isPassable((movementVector.normalized*_movementSensitivity*Time.deltaTime) + (Vector2) transform.position))
+		    if (_mapGeneratorScript.isPassable((movementVector.normalized*_movementSensitivity*Time.deltaTime) + (Vector2) transform.position) && !animationBlock)
 		    {
                 transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
                 _mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
@@ -199,11 +210,63 @@ public class PlayerInteraction : MonoBehaviour
 
     private void PlayerAnimation(string direction)
     {
-        var anim = gameObject.GetComponent<Animator>();
+        
 
         switch(direction)
         {
             case "stop":
+                _anim.SetBool("Moving", false);
+                _anim.SetBool("WalkLeft", false);
+                _anim.SetBool("WalkRight", false);
+                _anim.SetBool("WalkUp", false);
+                _anim.SetBool("WalkDown", false);
+                break;
+            case "left":
+                _anim.SetBool("Moving", true);
+                _anim.SetBool("WalkLeft", true);
+                _anim.SetBool("WalkRight", false);
+                _anim.SetBool("WalkUp", false);
+                _anim.SetBool("WalkDown", false);
+                break;
+            case "right":
+                _anim.SetBool("Moving", true);
+                _anim.SetBool("WalkLeft", false);
+                _anim.SetBool("WalkRight", true);
+                _anim.SetBool("WalkUp", false);
+                _anim.SetBool("WalkDown", false);
+                break;
+            case "up":
+                _anim.SetBool("Moving", true);
+                _anim.SetBool("WalkLeft", false);
+                _anim.SetBool("WalkRight", false);
+                _anim.SetBool("WalkUp", true);
+                _anim.SetBool("WalkDown", false);
+                break;
+            case "down":
+                _anim.SetBool("Moving", true);
+                _anim.SetBool("WalkLeft", false);
+                _anim.SetBool("WalkRight", false);
+                _anim.SetBool("WalkUp", false);
+                _anim.SetBool("WalkDown", true);
+                break;
+            case "death":
+                _anim.SetBool("AnimationBlock", true);
+                _anim.SetTrigger("Death");
+                break;
+            case "pickup":
+                _anim.SetBool("AnimationBlock", true);
+                _anim.SetTrigger("Pickup");
+                break;
+        }
+    }
+
+    public void AnimationEnd()
+    {
+        _anim.SetBool("AnimationBlock", false);
+    }
+}
+/*
+ * case "stop":
                 anim.SetBool("Moving", false);
                 anim.SetBool("WalkLeft", false);
                 anim.SetBool("WalkRight", false);
@@ -238,6 +301,7 @@ public class PlayerInteraction : MonoBehaviour
                 anim.SetBool("WalkUp", false);
                 anim.SetBool("WalkDown", true);
                 break;
-        }
-    }
-}
+            case "death":
+                anim.SetTrigger("Death");
+                break;
+*/

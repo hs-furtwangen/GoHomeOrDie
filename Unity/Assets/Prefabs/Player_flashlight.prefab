@@ -11,6 +11,7 @@ GameObject:
   - 212: {fileID: 21200000}
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: Player_flashlight
   m_TagString: Player
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1.11706591}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!95 &9500000
@@ -51,18 +52,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6e5cdeae3f782346bbf8ef3c1a9a525, type: 3}
+  m_Script: {fileID: 11500000, guid: a7f6fd1056f114f449eea01808c1e595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ItemParent: {fileID: 0}
-  _movementSensitivity: 0
-  _mainCamera: {fileID: 0}
-  _movementByMouse: 0
-  _movementByItem: 0
-  _mouseMovementTarget: {x: 0, y: 0}
-  _mouseStopDistance: 0
-  _moveToItem: {fileID: 0}
-  _pickupDistance: 0
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c734ceea94b620b44af31df6823efb06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCustomSkinThing: {fileID: 11400000, guid: f77c7e928afbd464092f31810b46d7fb, type: 2}
+  GuiBackground: {fileID: 2800000, guid: 89941f5b17cfd794c810825781dc283f, type: 3}
+  GuiItemBackgroundUp: {fileID: 2800000, guid: 4bec1a4f1f9190948b3c1f89bdc01a99, type: 3}
+  GuiItemBackgroundDown: {fileID: 2800000, guid: 1093740a5b53901438f5f32699b1501c,
+    type: 3}
+  GuiItemBackgroundFocus: {fileID: 2800000, guid: 4750e9ac108e9f1438245fb3b28d1d96,
+    type: 3}
+  DummyContent: {fileID: 0}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
