@@ -27,6 +27,7 @@ public class DawnTimer : MonoBehaviour {
 
 		if (lightLevel <= 0) {
 			// TODO: GAME OVER!
+            Application.LoadLevel(3);
 		}
 	}
 }

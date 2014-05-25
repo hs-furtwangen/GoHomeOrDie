@@ -10,7 +10,7 @@ public class CreditsRoll : MonoBehaviour
     public Sprite[] CreditSprite;
     private float _timer;
     private int _pos;
-
+    private SpriteRenderer _sr;
 
 	// Use this for initialization
 	void Start ()
@@ -18,6 +18,7 @@ public class CreditsRoll : MonoBehaviour
         CreditSprite = new Sprite[6];
 	    _timer = 3;
 	    _pos = 0;
+	    _sr = GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -27,7 +28,7 @@ public class CreditsRoll : MonoBehaviour
 	    if (_timer > 6)
 	    {
             if (_pos == CreditSprite.Length)
-	        GetComponent<SpriteRenderer>().sprite = CreditSprite[_pos];
+	        _sr.sprite = CreditSprite[_pos];
 	        _timer = 0;
 	        _pos++;
 	    }

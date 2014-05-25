@@ -16,5 +16,5 @@ function OnMouseExit()
 function OnMouseDown()
 {
 	guiTexture.texture = creditsHover;
-	//Application.LoadLevel();
+	Application.LoadLevel(4);
 }
