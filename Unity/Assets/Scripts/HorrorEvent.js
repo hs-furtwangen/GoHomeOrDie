@@ -44,7 +44,7 @@ function OnTriggerEnter()
 	randomEvent = Random.Range(1, 2);
 	
 	//Ghost
-	if (randomEvent == 0)
+	if (randomEvent == 1)
 	{
 		//Debug.Log("Spawn Ghost");
 		setSanity_Script.sanity -= 1;
@@ -53,7 +53,7 @@ function OnTriggerEnter()
 		ghost.SetActive (true);
 	}
 	//Wolf
-	if (randomEvent == 1)
+	if (randomEvent == 2)
 	{
 		//Debug.Log("Spawn Wolf");
 		setSanity_Script.sanity -= 1;
@@ -68,12 +68,12 @@ function OnTriggerEnter()
 function OnTriggerExit()
 {
 	//Ghost
-	if (randomEvent == 0)
+	if (randomEvent == 1)
 	{
 		moveGhost = true;
 	}
 	//Wolf
-	if (randomEvent == 1)
+	if (randomEvent == 2)
 	{
 		moveWolf = true;
 	}
