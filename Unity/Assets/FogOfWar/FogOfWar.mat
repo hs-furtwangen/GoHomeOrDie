@@ -44,12 +44,12 @@ Material:
     m_Floats:
       data:
         first:
-          name: _FogRadius
-        second: 5
-      data:
-        first:
           name: _Shininess
         second: .699999988
+      data:
+        first:
+          name: _FogRadius
+        second: 5
       data:
         first:
           name: _FogMaxRadius
@@ -69,16 +69,16 @@ Material:
         second: {r: .250980407, g: .258823544, b: .176470593, a: 1}
       data:
         first:
-          name: _PlayerPos
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
           name: _SpecColor
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _Emission
         second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
+          name: _PlayerPos
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Player1_Pos
