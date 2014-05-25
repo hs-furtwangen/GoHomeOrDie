@@ -78,7 +78,18 @@ public class InventoryGUI : MonoBehaviour {
 			// Add raft
 			var obj = Instantiate(RaftPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
 			var item = obj.GetComponent<LootItem>();
-			ItemCreatorClass itc = new ItemCreatorClass(item.name, item.iconSprite.texture, item.description);
+			var iconSprite = item.iconSprite;
+			var icon = new Texture2D((int)iconSprite.rect.width, (int)iconSprite.rect.height);
+			
+			var pixels = iconSprite.texture.GetPixels((int)iconSprite.textureRect.x,
+			                                          (int)iconSprite.textureRect.y,
+			                                          (int)iconSprite.textureRect.width,
+			                                          (int)iconSprite.textureRect.height);
+			
+			icon.SetPixels(pixels);
+			icon.Apply();
+
+			ItemCreatorClass itc = new ItemCreatorClass(item.name, icon, item.description);
 			InventoryContent[getFirstEmpty()] = itc;
 			Destroy(obj);
 		}
