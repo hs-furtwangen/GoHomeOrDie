@@ -75,6 +75,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemParent: {fileID: 0}
+  movementSounds:
+  - {fileID: 8200000, guid: d3ee7f419f56e2545b6788be8e72e276, type: 2}
+  - {fileID: 8200000, guid: 48bf2e5d35809a340af16e124f85ff6f, type: 2}
+  - {fileID: 8200000, guid: 04ecdcbf3fb643746a1a3299f1f1beeb, type: 2}
+  movementWaterSounds:
+  - {fileID: 8200000, guid: c895b328e3c4b3a428bd302094443cd1, type: 2}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
