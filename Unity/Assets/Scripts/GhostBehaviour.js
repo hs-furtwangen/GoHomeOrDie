@@ -3,7 +3,6 @@
 var Char : GameObject;
 var speed : float;
 
-
 function Start()
 {
 	Char = GameObject.Find("Player").gameObject;
