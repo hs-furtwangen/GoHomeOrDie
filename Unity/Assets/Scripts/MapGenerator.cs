@@ -11,7 +11,17 @@ public class MapGenerator : MonoBehaviour {
 	public GameObject[] items;
 	public Sprite[] grassTiles;
 	public bool grassPassability = true;
-	public Sprite[] pathTiles;
+	public Sprite[] pathCrossTiles;
+	public Sprite[] pathTopLeftBottomRightTiles;
+	public Sprite[] pathTopRightBottomLeftTiles;
+	public Sprite[] pathTopLeftBottomLeftTiles;
+	public Sprite[] pathTopLeftTopRightTiles;
+	public Sprite[] pathTopRightBottomRightTiles;
+	public Sprite[] pathBottomLeftBottomRightTiles;
+	public Sprite[] pathTopLeftEndTiles;
+	public Sprite[] pathTopRightEndTiles;
+	public Sprite[] pathBottomLeftEndTiles;
+	public Sprite[] pathBottomRightEndTiles;
 	public bool pathPassability = true;
 	public Sprite[] treeTiles;
 	public bool treePassability = false;
@@ -39,7 +49,17 @@ public class MapGenerator : MonoBehaviour {
 	{
 		None,
 		Grass,
-		Path,
+		PathCross,
+		PathTopLeftBottomRight,
+		PathTopRightBottomLeft,
+		PathTopLeftBottomLeft,
+		PathTopLeftTopRight,
+		PathTopRightBottomRight,
+		PathTopRightEnd,
+		PathTopLeftEnd,
+		PathBottomLeftBottomRight,
+		PathBottomLeftEnd,
+		PathBottomRightEnd,
 		Tree,
 		Water,
 		WaterDeep,
@@ -121,21 +141,21 @@ public class MapGenerator : MonoBehaviour {
 	uint generatePath()
 	{
 		uint amount = 1;
-
+		
 		uint xStart = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getWidth() - 1));
 		uint yStart = (uint)Mathf.RoundToInt(Random.Range(0, m_tileMap.getHeight() - 1));
-
-		createTileAt (xStart, yStart, 0, TileType.Path);
-
+		
+		createTileAt (xStart, yStart, 0, TileType.PathCross);
+		
 		uint lastX = xStart;
 		uint lastY = yStart;
-
+		
 		float breakProbability = 1.0f / (m_tileMap.getWidth() + m_tileMap.getHeight());
-
+		
 		while (true) {
 			uint newX = lastX;
 			uint newY = lastY;
-			for(int i = 0; i < 4 && newX >= 0 && newY >= 0 && newX < m_tileMap.getWidth() && newY < m_tileMap.getHeight() && checkTile(newX, newY, 0) == TileType.Path; i++)
+			for(int i = 0; i < 4 && newX >= 0 && newY >= 0 && newX < m_tileMap.getWidth() && newY < m_tileMap.getHeight() && checkTile(newX, newY, 0) == TileType.PathCross; i++)
 			{
 				// Generate new tile in one of the directions of the previous tile
 				int dir = Mathf.RoundToInt(Random.Range(0, 3));
@@ -164,17 +184,34 @@ public class MapGenerator : MonoBehaviour {
 					break;
 				}
 			}
-			createTileAt (newX, newY, 0, TileType.Path);
+			createTileAt (newX, newY, 0, TileType.PathCross);
 			amount++;
-
+			
 			// Break?
 			if(Random.Range(0.0f, 1.0f) < breakProbability)
 				break;
-
+			
 			lastX = newX;
 			lastY = newY;
 		}
 		return amount;
+	}
+
+	TileType getPathFromTo(uint from, uint to)
+	{
+		if (from == 0 && to == 1)
+			return TileType.PathTopLeftTopRight;
+		if(from == 0 && to == 2)
+			return TileType.PathTopLeftBottomLeft;
+		if(from == 0 && to == 3)
+			return TileType.PathTopLeftBottomRight;
+		if(from == 1 && to == 2)
+			return TileType.PathTopRightBottomLeft;
+		if(from == 1 && to == 3)
+			return TileType.PathTopRightBottomRight;
+		if(from == 2 && to == 3)
+			return TileType.PathBottomLeftBottomRight;
+		return TileType.None;
 	}
 
 	void generateTrees()
@@ -418,8 +455,48 @@ public class MapGenerator : MonoBehaviour {
 			curSprite = grassTiles[Random.Range(0, grassTiles.Length-1)];
 			passability = grassPassability;
 			break;
-		case TileType.Path:
-			curSprite = pathTiles[Random.Range(0, pathTiles.Length-1)];
+		case TileType.PathCross:
+			curSprite = pathCrossTiles[Random.Range(0, pathCrossTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopLeftEnd:
+			curSprite = pathTopLeftEndTiles[Random.Range(0, pathTopLeftEndTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopRightEnd:
+			curSprite = pathTopRightEndTiles[Random.Range(0, pathTopRightEndTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathBottomLeftEnd:
+			curSprite = pathBottomLeftEndTiles[Random.Range(0, pathBottomLeftEndTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathBottomRightEnd:
+			curSprite = pathBottomRightEndTiles[Random.Range(0, pathBottomRightEndTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopRightBottomLeft:
+			curSprite = pathTopRightBottomLeftTiles[Random.Range(0, pathTopRightBottomLeftTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopRightBottomRight:
+			curSprite = pathTopRightBottomRightTiles[Random.Range(0, pathTopRightBottomRightTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopLeftBottomLeft:
+			curSprite = pathTopLeftBottomLeftTiles[Random.Range(0, pathTopLeftBottomLeftTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopLeftBottomRight:
+			curSprite = pathTopLeftBottomRightTiles[Random.Range(0, pathTopLeftBottomRightTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathTopLeftTopRight:
+			curSprite = pathTopLeftTopRightTiles[Random.Range(0, pathTopLeftTopRightTiles.Length-1)];
+			passability = pathPassability;
+			break;
+		case TileType.PathBottomLeftBottomRight:
+			curSprite = pathBottomLeftBottomRightTiles[Random.Range(0, pathBottomLeftBottomRightTiles.Length-1)];
 			passability = pathPassability;
 			break;
 		case TileType.Tree:
@@ -527,8 +604,28 @@ public class MapGenerator : MonoBehaviour {
 		Transform tr = go.GetComponent<Transform> ();
 		if (System.Array.IndexOf (grassTiles, spr) > -1)
 			return TileType.Grass;
-		else if (System.Array.IndexOf (pathTiles, spr) > -1)
-			return TileType.Path;
+		else if (System.Array.IndexOf (pathCrossTiles, spr) > -1)
+			return TileType.PathCross;
+		else if (System.Array.IndexOf (pathTopLeftBottomLeftTiles, spr) > -1)
+			return TileType.PathTopLeftBottomLeft;
+		else if (System.Array.IndexOf (pathTopLeftBottomRightTiles, spr) > -1)
+			return TileType.PathTopLeftBottomRight;
+		else if (System.Array.IndexOf (pathTopLeftTopRightTiles, spr) > -1)
+			return TileType.PathTopLeftTopRight;
+		else if (System.Array.IndexOf (pathTopRightBottomLeftTiles, spr) > -1)
+			return TileType.PathTopRightBottomLeft;
+		else if (System.Array.IndexOf (pathTopRightBottomRightTiles, spr) > -1)
+			return TileType.PathTopRightBottomRight;
+		else if (System.Array.IndexOf (pathBottomLeftBottomRightTiles, spr) > -1)
+			return TileType.PathBottomLeftBottomRight;
+		else if (System.Array.IndexOf (pathTopLeftEndTiles, spr) > -1)
+			return TileType.PathTopLeftEnd;
+		else if (System.Array.IndexOf (pathTopRightEndTiles, spr) > -1)
+			return TileType.PathTopRightEnd;
+		else if (System.Array.IndexOf (pathBottomLeftEndTiles, spr) > -1)
+			return TileType.PathBottomLeftEnd;
+		else if (System.Array.IndexOf (pathBottomRightEndTiles, spr) > -1)
+			return TileType.PathBottomRightEnd;
 		else if (System.Array.IndexOf (treeTiles, spr) > -1)
 			return TileType.Tree;
 		else if (System.Array.IndexOf (waterTiles, spr) > -1)

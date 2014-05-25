@@ -157,8 +157,28 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4b4facfa2b825034d9e0ab17f3910460, type: 3}
   - {fileID: 21300000, guid: 98ee404e7b06c62469bc7993a68689f0, type: 3}
   grassPassability: 1
-  pathTiles:
+  pathCrossTiles:
   - {fileID: 21300000, guid: 8eaa016df252a194e8264468b5184896, type: 3}
+  pathTopLeftBottomRightTiles:
+  - {fileID: 21300000, guid: c686709cd95cd4240bf1aba2bd0d7933, type: 3}
+  pathTopRightBottomLeftTiles:
+  - {fileID: 21300000, guid: 8e332f5bebe978b4f97d02af148b1c24, type: 3}
+  pathTopLeftBottomLeftTiles:
+  - {fileID: 21300000, guid: 72faa84cf4342a5409a917787fe34513, type: 3}
+  pathTopLeftTopRightTiles:
+  - {fileID: 21300000, guid: 95985986d5fc7874290d58554a28e5a1, type: 3}
+  pathTopRightBottomRightTiles:
+  - {fileID: 21300000, guid: 046b6cbba36995442855f6f72249fa63, type: 3}
+  pathBottomLeftBottomRightTiles:
+  - {fileID: 21300000, guid: 2afbcc854bfe1a44aa4476c2d538b5a6, type: 3}
+  pathTopLeftEndTiles:
+  - {fileID: 21300000, guid: 135b430128fc4b944b4b7f08b49259a3, type: 3}
+  pathTopRightEndTiles:
+  - {fileID: 21300000, guid: 591225caf004e1c4e98e0cae69ef7146, type: 3}
+  pathBottomLeftEndTiles:
+  - {fileID: 21300000, guid: e0926666ba17eea43963c5a78c774ab1, type: 3}
+  pathBottomRightEndTiles:
+  - {fileID: 21300000, guid: b249f1e704e37364a961d6fd9f939417, type: 3}
   pathPassability: 1
   treeTiles:
   - {fileID: 21300000, guid: 32c41d954c8de6c4c9ca898d059100a2, type: 3}
