@@ -20,6 +20,8 @@ public class PlayerInteraction : MonoBehaviour
     private MapGenerator _mapGeneratorScript;
     private Animator _anim;
 
+    private MessageDisplay _messageDisplay;
+
 	private AudioSource curMovementSound = null;
 
 // ReSharper disable once UnusedMember.Local
@@ -35,6 +37,8 @@ public class PlayerInteraction : MonoBehaviour
         _mapGenerator = GameObject.FindGameObjectWithTag("MapGenerator");
 	    _mapGeneratorScript = _mapGenerator.GetComponent<MapGenerator>();
 	    _anim = gameObject.GetComponent<Animator>();
+	    var messageDisplayPrefab = GameObject.FindGameObjectWithTag("MessageDisplay");
+	    _messageDisplay = messageDisplayPrefab.GetComponent<MessageDisplay>();
 	}
 	
 // ReSharper disable once UnusedMember.Local
@@ -156,9 +160,10 @@ public class PlayerInteraction : MonoBehaviour
 				if (Vector2.Distance(item.position, transform.position) < _pickupDistance)
 				{
                     PlayerAnimation("pickup");
+                    _messageDisplay.DisplayMessage("You picked something up!");
 					item.GetComponent<LootItem>().PickUp();
 					Destroy(item.gameObject);
-				}
+                }
 			}
 		}
 		
@@ -226,6 +231,7 @@ public class PlayerInteraction : MonoBehaviour
 			if (_movementByItem && _moveToItem != null)
 			{
                 PlayerAnimation("pickup");
+                _messageDisplay.DisplayMessage("You picked something up!");
 				_moveToItem.GetComponent<LootItem>().PickUp();
 				Destroy(_moveToItem);
 				_movementByItem = false;
