@@ -18,10 +18,14 @@ public class FogOfWar : MonoBehaviour
     public int RevInnerRadius;
     public int RevRadius;
 
-    public float speed;
+	public Color CloudColor;
+
+    public float MovSpeed;
 
     // PRIVATE VARIABLES
     private Vector3 _lastPos;
+
+	private float _curRevInnerRad;
 
     private Color[] _colArr;
     private Color[] _colArrCur;
@@ -33,25 +37,20 @@ public class FogOfWar : MonoBehaviour
     private int _texWidth;
     private int _texHeight;
 
-    private Dictionary<int,float> _pixToRev;
     private Dictionary<int,Vector2> _pixToHide;
 
     private Vector2[] _perlinSpeed;
 
     // CONST VARIBALES
-    private Color cloudColor = Color.white;
-    
     private int octaves = 6;
     private float persistence = 0.6f;
     
     private float contrastLow = 0f;
-    private float contrastHigh = 1f;
-    private float brightnessOffset = 0f;
+    private float contrastHigh = 1f;    
 
     // METHODS
     internal void Start()
     {
-        _pixToRev = new Dictionary<int,float>();
         _pixToHide = new Dictionary<int,Vector2>();
 
         _texWidth = (int) transform.localScale.z * TexSize;
@@ -114,7 +113,11 @@ public class FogOfWar : MonoBehaviour
         var pixPosY = (int)-((localPos.y / width) * _texWidth);
         var pixPos = new Vector2(pixPosX, pixPosY);
 
-        float inRad = TexSize / RevInnerRadius;
+		var radOff = (Mathf.PerlinNoise (Time.time, 0.0f) - 0.5f) / 100;
+		_curRevInnerRad = Mathf.Max (RevInnerRadius - 0.2f,
+			Mathf.Min (RevInnerRadius + 0.2f, _curRevInnerRad + radOff));
+
+		float inRad = TexSize / _curRevInnerRad;
         float outRad = TexSize / RevRadius;       
 
         if (playerPos != _lastPos)
@@ -134,7 +137,7 @@ public class FogOfWar : MonoBehaviour
 
                         if (pixInd >= 0 && pixInd < _colArr.Length) {
                             _colArrCur[pixInd].a = Mathf.Min(alpha, _colArrCur[pixInd].a);
-                            _colArr[pixInd].a = 1 - _colArrCur[pixInd].a;;
+                            _colArr[pixInd].a = 1 - _colArrCur[pixInd].a;
                             _colArrMask[pixInd].a = Random.Range(1.05f, 1.10f);
 
                             UniquePush(ref _pixToHide, pixInd, posV);
@@ -149,31 +152,8 @@ public class FogOfWar : MonoBehaviour
             _lastPos = playerPos;
         }
 
-        // reveal for a few seconds
-        var itemToDelete = new HashSet<int>();
-
-        /*
-            var itemToChange = new Dictionary<int,float>();
-
-            foreach (var pixToRev in _pixToRev)
-            {
-                var newTime = pixToRev.Value - Time.deltaTime;
-
-                if (newTime < 0)
-                    itemToDelete.Add(pixToRev.Key);
-                else
-                    itemToChange.Add(pixToRev.Key, newTime);
-            }
-
-            foreach (var item in itemToChange)
-                _pixToRev [item.Key] = item.Value;
-
-            foreach (var item in itemToDelete)
-                _pixToRev.Remove(item);
-        */
-
         // hide within a few seconds
-        itemToDelete.Clear();
+        var itemToDelete = new HashSet<int>();
 
         foreach (var pixToHide in _pixToHide)
         {
@@ -182,26 +162,28 @@ public class FogOfWar : MonoBehaviour
             if (dist < inRad)
                 continue;
 
-            _colArrMask[pixToHide.Key].a -= HideSpeed*Time.deltaTime;
-            _colArrCur[pixToHide.Key].a = 1 - (_colArr[pixToHide.Key].a * 
-                                               Mathf.Min(1, _colArrMask[pixToHide.Key].a));
+			var curArrMask = _colArrMask[pixToHide.Key].a;
+			curArrMask -= HideSpeed*Time.deltaTime;
 
-            if (dist > inRad) {
-                var maxAlpha = ((dist - inRad) / (outRad - inRad));
+			_colArrCur[pixToHide.Key].a = 1 - (_colArr[pixToHide.Key].a * 
+			                                   Mathf.Min(1, _colArrMask[pixToHide.Key].a));
 
-                if (_colArrCur[pixToHide.Key].a > maxAlpha)
+			var maxAlpha = ((dist - inRad) / (outRad - inRad));
+
+                if (_colArrCur[pixToHide.Key].a > maxAlpha) {
                     _colArrCur[pixToHide.Key].a = maxAlpha;
-            }
-
-            if (_colArrCur[pixToHide.Key].a >= TargetAlpha)
+				} else if (_colArrCur[pixToHide.Key].a >= TargetAlpha)
             {
                 _colArrCur[pixToHide.Key].a = TargetAlpha;
                 _colArr[pixToHide.Key].a = TargetAlpha;
                 _colArrMask[pixToHide.Key].a = 0;
 
                 itemToDelete.Add(pixToHide.Key);
-            }
-            
+            } else {
+				_colArrMask[pixToHide.Key].a = curArrMask;
+
+			}
+
             redraw = true;
         }
 
@@ -220,8 +202,8 @@ public class FogOfWar : MonoBehaviour
         {
             var mainTexOff = renderer.materials [i].GetVector("_TexOffset");
 
-            var offVec = new Vector2(mainTexOff.x + _perlinSpeed [i].x * Time.deltaTime * speed/10000,
-                                     mainTexOff.y + _perlinSpeed [i].y * Time.deltaTime * speed/10000);
+			var offVec = new Vector2(mainTexOff.x + _perlinSpeed [i].x * Time.deltaTime * MovSpeed/10000,
+			                         mainTexOff.y + _perlinSpeed [i].y * Time.deltaTime * MovSpeed/10000);
 
             renderer.materials [i].SetVector("_TexOffset", offVec);
         }
@@ -251,9 +233,10 @@ public class FogOfWar : MonoBehaviour
                 noiseValue = Mathf.Clamp(noiseValue, contrastLow, contrastHigh + contrastLow) - contrastLow;
                 noiseValue = Mathf.Clamp(noiseValue, 0f, 1f);
                 
-                float r = Mathf.Clamp(cloudColor.r + brightnessOffset, 0f, 1f);
-                float g = Mathf.Clamp(cloudColor.g + brightnessOffset, 0f, 1f);
-                float b = Mathf.Clamp(cloudColor.b + brightnessOffset, 0f, 1f);
+				var brightOff = Random.Range(-0.01f, 0.01f);
+				float r = Mathf.Clamp(CloudColor.r + brightOff, 0f, 1f);
+				float g = Mathf.Clamp(CloudColor.g + brightOff, 0f, 1f);
+				float b = Mathf.Clamp(CloudColor.b + brightOff, 0f, 1f);
                 
                 tex.SetPixel(x, y, new Color(r, g, b, noiseValue));
                 tex.SetPixel(511 - x, y, new Color(r, g, b, noiseValue));

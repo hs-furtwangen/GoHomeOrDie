@@ -19,7 +19,7 @@ public class death : MonoBehaviour {
 
 	    if (_timer > 6)
 	    {
-	        //Application.LoadLevel();
+	        Application.LoadLevel(4);
 	    }
 	}
 }
