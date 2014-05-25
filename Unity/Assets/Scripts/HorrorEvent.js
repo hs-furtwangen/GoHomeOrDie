@@ -11,6 +11,7 @@ var Script_WolfBehaviour : WolfBehaviour;
 var wolfSound : AudioSource;
 
 public var randomEvent : int;
+var setSanity_Script : setSanity;
 
 function Start () 
 {
@@ -46,7 +47,7 @@ function OnTriggerEnter()
 	if (randomEvent == 0)
 	{
 		//Debug.Log("Spawn Ghost");
-		//Sanity -= 1;
+		setSanity_Script.sanity -= 1;
 		ghostSound.transform.position = this.transform.position;
 		ghostSound.Play();
 		ghost.SetActive (true);
@@ -55,11 +56,9 @@ function OnTriggerEnter()
 	if (randomEvent == 1)
 	{
 		//Debug.Log("Spawn Wolf");
-		//Sanity -= 1;
+		setSanity_Script.sanity -= 1;
 		wolfSound.transform.position = this.transform.position;
 		wolfSound.Play();
-		wolf.transform.position.z = -3.567627;
-		wolf.transform.localPosition.x = 14;
 		wolf.SetActive (true);
 	}
 	
@@ -80,7 +79,3 @@ function OnTriggerExit()
 	}
 	this.collider.enabled = false;
 }
-
-//Problems
-//Wolf kills ghosts for some reason...
-
