@@ -28,7 +28,7 @@ public class LootItem : MonoBehaviour {
         icon.Apply();
 
         inventoryGUI = GameObject.FindGameObjectWithTag("Player");
-        icc = new ItemCreatorClass(name, icon, description);
+		icc = new ItemCreatorClass(itemname, icon, description);
         inventoryList = inventoryGUI.GetComponent<InventoryGUI>().InventoryContent;
 	}
 

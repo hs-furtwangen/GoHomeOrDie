@@ -149,6 +149,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 0601ed509f172274ab3da3a539ce2e4b, type: 2}
+      propertyPath: RaftPrefab
+      value: 
+      objectReference: {fileID: 100000, guid: 4289c23e21ae85240b8a47082b2375ad, type: 2}
+    - target: {fileID: 11400000, guid: 0601ed509f172274ab3da3a539ce2e4b, type: 2}
+      propertyPath: TorchPrefab
+      value: 
+      objectReference: {fileID: 100000, guid: 84f8fb18e07df3743b3ca8f2a7ee7318, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0601ed509f172274ab3da3a539ce2e4b, type: 2}
   m_RootGameObject: {fileID: 2086566748}
@@ -318,8 +326,21 @@ MonoBehaviour:
   showEvents: 1
   itemFolder: {fileID: 1120578969}
   items:
-  - {fileID: 100000, guid: 10da43d7d5045d341b6a704d8ce4de46, type: 2}
-  - {fileID: 100000, guid: 44aa8d8d3c550b04097f6e9b1dbb9c8d, type: 2}
+  - {fileID: 100000, guid: 69a6154b2a3fee548b4783af86665f3b, type: 2}
+  - {fileID: 100000, guid: 3e665dad6f885474c932bf598820b409, type: 2}
+  - {fileID: 100000, guid: 2edce13fb23f43a4f86c73fd533f04ae, type: 2}
+  - {fileID: 100000, guid: e57f9a0979872ec449db722bffd4cf2b, type: 2}
+  - {fileID: 100000, guid: 71e7e482cb855e84bb0cd1a66ddf1cff, type: 2}
+  - {fileID: 100000, guid: 7919571c7ed6fa84c95c158a45e97aed, type: 2}
+  - {fileID: 100000, guid: 9b3eac4c10dce8b4e980da957c31ce5a, type: 2}
+  - {fileID: 100000, guid: b8ba608848a336843975300220f68107, type: 2}
+  - {fileID: 100000, guid: cad97741d4dfdc34e9abed725541a148, type: 2}
+  - {fileID: 100000, guid: 82b42599d5a97474eac3e4d43056cf35, type: 2}
+  - {fileID: 100000, guid: 9e924173f2b3fce47b901f031aae4c73, type: 2}
+  - {fileID: 100000, guid: ea5ba2b873c89d64fa65207c730eb568, type: 2}
+  - {fileID: 100000, guid: 4a6903c3f87facd4fa9400ebb5c4b92b, type: 2}
+  - {fileID: 100000, guid: b8f9e86c42424ef44924353c4f52f544, type: 2}
+  - {fileID: 100000, guid: bf0f6d05fe1a7ed4abfd14b48654fb53, type: 2}
   grassTiles:
   - {fileID: 21300000, guid: 3a045bf227a6e8b4a92771404c4fe01f, type: 3}
   - {fileID: 21300000, guid: d1eeef648c4d04c43aff74a110c7c671, type: 3}
@@ -1015,6 +1036,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.size
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
       propertyPath: m_LocalPosition.x
       value: 3.07724833
@@ -1059,6 +1084,74 @@ Prefab:
       propertyPath: showEvents
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[2]
+      value: 
+      objectReference: {fileID: 100000, guid: 2edce13fb23f43a4f86c73fd533f04ae, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[3]
+      value: 
+      objectReference: {fileID: 100000, guid: e57f9a0979872ec449db722bffd4cf2b, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[4]
+      value: 
+      objectReference: {fileID: 100000, guid: 71e7e482cb855e84bb0cd1a66ddf1cff, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[5]
+      value: 
+      objectReference: {fileID: 100000, guid: 7919571c7ed6fa84c95c158a45e97aed, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[6]
+      value: 
+      objectReference: {fileID: 100000, guid: 9b3eac4c10dce8b4e980da957c31ce5a, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[7]
+      value: 
+      objectReference: {fileID: 100000, guid: b8ba608848a336843975300220f68107, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[8]
+      value: 
+      objectReference: {fileID: 100000, guid: cad97741d4dfdc34e9abed725541a148, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[9]
+      value: 
+      objectReference: {fileID: 100000, guid: 82b42599d5a97474eac3e4d43056cf35, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[10]
+      value: 
+      objectReference: {fileID: 100000, guid: 9e924173f2b3fce47b901f031aae4c73, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[11]
+      value: 
+      objectReference: {fileID: 100000, guid: ea5ba2b873c89d64fa65207c730eb568, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[12]
+      value: 
+      objectReference: {fileID: 100000, guid: 4a6903c3f87facd4fa9400ebb5c4b92b, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[13]
+      value: 
+      objectReference: {fileID: 100000, guid: b8f9e86c42424ef44924353c4f52f544, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[14]
+      value: 
+      objectReference: {fileID: 100000, guid: bf0f6d05fe1a7ed4abfd14b48654fb53, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[15]
+      value: 
+      objectReference: {fileID: 100000, guid: 84f8fb18e07df3743b3ca8f2a7ee7318, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[16]
+      value: 
+      objectReference: {fileID: 100000, guid: bf0f6d05fe1a7ed4abfd14b48654fb53, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[0]
+      value: 
+      objectReference: {fileID: 100000, guid: 69a6154b2a3fee548b4783af86665f3b, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: items.Array.data[1]
+      value: 
+      objectReference: {fileID: 100000, guid: 3e665dad6f885474c932bf598820b409, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
   m_RootGameObject: {fileID: 277508880}
@@ -1754,6 +1847,8 @@ MonoBehaviour:
   GuiItemBackgroundFocus: {fileID: 2800000, guid: 4750e9ac108e9f1438245fb3b28d1d96,
     type: 3}
   DummyContent: {fileID: 0}
+  RaftPrefab: {fileID: 100000, guid: 4289c23e21ae85240b8a47082b2375ad, type: 2}
+  TorchPrefab: {fileID: 100000, guid: 84f8fb18e07df3743b3ca8f2a7ee7318, type: 2}
 --- !u!114 &2086566750
 MonoBehaviour:
   m_ObjectHideFlags: 0
