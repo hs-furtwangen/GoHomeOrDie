@@ -99,10 +99,14 @@ public class PlayerInteraction : MonoBehaviour
 		if ((moveX != 0 || moveY != 0) && GameState.State.playing == GameState.TheState && !animationBlock)
 			// ReSharper restore CompareOfFloatsByEqualityOperator
 		{
-		    if (_mapGeneratorScript.isPassable(new Vector2(moveX, moveY) + (Vector2) transform.position))
-		    {
-		        transform.Translate(moveX, moveY, 0);
-		        _mainCamera.transform.Translate(moveX, moveY, 0);
+			Vector2 checkPos = new Vector2(moveX, moveY) + (Vector2) transform.position;
+			if (_mapGeneratorScript.isPassable(checkPos))
+			{
+				float mod = 1.0f;
+				if(_mapGeneratorScript.checkTile(_mapGeneratorScript.getGridCoordinates(checkPos), 0) == MapGenerator.TileType.Water)
+					mod = 0.5f;
+				transform.Translate(moveX * mod, moveY * mod, 0);
+				_mainCamera.transform.Translate(moveX * mod, moveY * mod, 0);
 		    }
 		    _movementByMouse = false;
 			_movementByItem = false;
@@ -232,8 +236,11 @@ public class PlayerInteraction : MonoBehaviour
 		{
 		    if (_mapGeneratorScript.isPassable((movementVector.normalized*_movementSensitivity*Time.deltaTime) + (Vector2) transform.position) && !animationBlock)
 		    {
-                transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
-                _mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime);
+				float mod = 1.0f;
+				if(_mapGeneratorScript.checkTile(_mapGeneratorScript.getGridCoordinates(transform.position), 0) == MapGenerator.TileType.Water)
+					mod = 0.5f;
+				transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime * mod);
+				_mainCamera.transform.Translate(movementVector.normalized * _movementSensitivity * Time.deltaTime * mod);
 		    }
 		}
 	}
