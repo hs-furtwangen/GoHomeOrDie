@@ -950,7 +950,8 @@ MonoBehaviour:
   TexSize: 128
   RevInnerRadius: 5
   RevRadius: 3
-  speed: 7
+  CloudColor: {r: .823529422, g: .823529422, b: .823529422, a: 0}
+  MovSpeed: 20
 --- !u!23 &1256799199
 Renderer:
   m_ObjectHideFlags: 0
@@ -964,6 +965,8 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
+  - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
+  - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
   - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
   - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
   - {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
@@ -1076,6 +1079,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2300000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: m_Materials.Array.size
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
       propertyPath: m_LocalPosition.x
       value: 27.9428101
@@ -1108,6 +1115,30 @@ Prefab:
       propertyPath: Revealer
       value: 
       objectReference: {fileID: 2086566748}
+    - target: {fileID: 11400000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: CloudColor.r
+      value: .823529422
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: CloudColor.g
+      value: .823529422
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: CloudColor.b
+      value: .823529422
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: MovSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
+    - target: {fileID: 2300000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
+      propertyPath: m_Materials.Array.data[6]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec307e4d49337b44089749b3686950b9, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b51fcc952d691634abc08863afda5f25, type: 2}
   m_RootGameObject: {fileID: 1256799197}
@@ -1236,6 +1267,10 @@ Prefab:
       propertyPath: items.Array.data[1]
       value: 
       objectReference: {fileID: 100000, guid: 3e665dad6f885474c932bf598820b409, type: 2}
+    - target: {fileID: 11400000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
+      propertyPath: mapWidth
+      value: 32
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d20e158ba9ca7804495ec9781e49a6f8, type: 2}
   m_RootGameObject: {fileID: 277508880}
