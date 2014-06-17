@@ -16,5 +16,5 @@ function OnMouseExit()
 function OnMouseDown()
 {
 	guiTexture.texture = playHover;
-	Application.LoadLevel(1);
+	Application.LoadLevel(2);
 }
